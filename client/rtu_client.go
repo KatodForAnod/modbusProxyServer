@@ -36,6 +36,7 @@ func (c *RTUClient) Disconnect() error {
 	return nil
 }
 
+// ReadCoils - чтение текущего состояния (ON/OFF) дискретных выходов. 1 бит. Диапазон 00001-10000
 func (c *RTUClient) ReadCoils(address, quantity uint16) ([]byte, error) {
 	log.Println("ReadCoils address:", address, "quantity:", quantity)
 
@@ -48,6 +49,7 @@ func (c *RTUClient) ReadCoils(address, quantity uint16) ([]byte, error) {
 	return result, nil
 }
 
+// WriteSingleCoil - изменения состояния дискретного выхода в ON или OFF. 1 бит. Диапазон 00001-10000
 func (c *RTUClient) WriteSingleCoil(address, value uint16) ([]byte, error) {
 	log.Println("WriteSingleCoil address:", address, "value:", value)
 
@@ -60,6 +62,7 @@ func (c *RTUClient) WriteSingleCoil(address, value uint16) ([]byte, error) {
 	return result, nil
 }
 
+// WriteMultipleCoils - изменения состояния нескольких дискретных выходов в ON или OFF. 1 бит. Диапазон 00001-10000
 func (c *RTUClient) WriteMultipleCoils(address, quantity uint16, coils []CoilType) ([]byte, error) {
 	log.Println("WriteMultipleCoils address:", address, "quantity:", quantity, "coils:", coils)
 
@@ -77,6 +80,7 @@ func (c *RTUClient) WriteMultipleCoils(address, quantity uint16, coils []CoilTyp
 	return result, nil
 }
 
+// WriteSingleRegister - запись одного регистра. 16 бит. Диапазон 40001 - 50000
 func (c *RTUClient) WriteSingleRegister(address, value uint16) ([]byte, error) {
 	log.Println("WriteSingleRegister address:", address, "value:", value)
 
@@ -89,6 +93,7 @@ func (c *RTUClient) WriteSingleRegister(address, value uint16) ([]byte, error) {
 	return result, nil
 }
 
+// WriteMultipleRegisters - запись нескольких регистров. 16 бит. Диапазон 40001 - 50000
 func (c *RTUClient) WriteMultipleRegisters(address, quantity uint16, values []uint16) ([]byte, error) {
 	log.Println("WriteMultipleRegisters address:", address, "quantity:", quantity, "values", values)
 
@@ -107,6 +112,7 @@ func (c *RTUClient) WriteMultipleRegisters(address, quantity uint16, values []ui
 	return result, nil
 }
 
+// ReadDiscreteInputs - чтение текущего состояния (ON/OFF) дискретных выходов/входов. 1 бит. Диапазон 00001-20000
 func (c *RTUClient) ReadDiscreteInputs(address, quantity uint16) ([]byte, error) {
 	log.Println("ReadDiscreteInputs address:", address, "quantity:", quantity)
 
@@ -119,6 +125,7 @@ func (c *RTUClient) ReadDiscreteInputs(address, quantity uint16) ([]byte, error)
 	return result, nil
 }
 
+// ReadInputRegisters - чтение входных регистров. 16 бит. Диапазон 30001-40000
 func (c *RTUClient) ReadInputRegisters(address, quantity uint16) ([]byte, error) {
 	log.Println("ReadInputRegisters address:", address, "quantity:", quantity)
 
@@ -131,6 +138,7 @@ func (c *RTUClient) ReadInputRegisters(address, quantity uint16) ([]byte, error)
 	return result, nil
 }
 
+// ReadHoldingRegisters - чтение регистров хранения. 16 бит. Диапазон 40001-50000
 func (c *RTUClient) ReadHoldingRegisters(address, quantity uint16) ([]byte, error) {
 	log.Println("ReadHoldingRegisters address:", address, "quantity:", quantity)
 
@@ -143,6 +151,7 @@ func (c *RTUClient) ReadHoldingRegisters(address, quantity uint16) ([]byte, erro
 	return result, nil
 }
 
+// ReadWriteMultipleRegisters - чтение/запись нескольких регистров. 16 бит. Диапазон 40001-50000
 func (c *RTUClient) ReadWriteMultipleRegisters(readAddress uint16, readQuantity uint16,
 	writeAddress uint16, writeQuantity uint16, values []uint16) ([]byte, error) {
 	log.Println("ReadWriteMultipleRegisters readAddress:", readAddress,
@@ -165,6 +174,7 @@ func (c *RTUClient) ReadWriteMultipleRegisters(readAddress uint16, readQuantity 
 	return result, nil
 }
 
+// ReadFIFOQueue - чтение содержимого очереди FIFO. 16 бит. Диапазон 40001-50000
 func (c *RTUClient) ReadFIFOQueue(address uint16) ([]byte, error) {
 	log.Println("ReadFIFOQueue address:", address)
 
@@ -177,6 +187,7 @@ func (c *RTUClient) ReadFIFOQueue(address uint16) ([]byte, error) {
 	return result, nil
 }
 
+// MaskWriteRegister - маскированная запись регистра. 16 бит. Диапазон 40001-50000
 func (c *RTUClient) MaskWriteRegister(address uint16, andMask uint16, orMask uint16) ([]byte, error) {
 	log.Println("MaskWriteRegister address:", address,
 		"andMask:", andMask, "orMask:", orMask)
