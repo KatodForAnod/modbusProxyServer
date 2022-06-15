@@ -11,9 +11,10 @@ type RTUClient struct {
 	client  modbus.Client
 }
 
-func (c *RTUClient) Connect(conf serial.Config) error {
+func (c *RTUClient) Connect(conf serial.Config, slaveId byte) error {
 	log.Println("Connect with com port:", conf.Address)
 	c.handler = modbus.NewRTUClientHandler(conf.Address)
+	c.handler.SlaveId = slaveId
 
 	c.handler.Config = conf
 	if err := c.handler.Connect(); err != nil {
@@ -51,7 +52,7 @@ func (c *RTUClient) ReadCoils(address, quantity uint16) ([]byte, error) {
 
 // WriteSingleCoil - изменения состояния дискретного выхода в ON или OFF. 1 бит. Диапазон 00001-10000
 func (c *RTUClient) WriteSingleCoil(address uint16, coil CoilType) ([]byte, error) {
-	log.Println("WriteSingleCoil address:", address, "coil:", coil)
+	log.Println("WriteSingleCoil address:", address, "coil:", coil.String())
 
 	result, err := c.client.WriteSingleCoil(address, coil.ToUint16())
 	if err != nil {
