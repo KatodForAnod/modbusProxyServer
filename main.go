@@ -2,35 +2,27 @@ package main
 
 import (
 	"fmt"
-	"github.com/goburrow/modbus"
+	"github.com/goburrow/serial"
 	"log"
+	"modbusprottocol/client"
 	"time"
 )
 
 func main() {
-	handler := modbus.NewRTUClientHandler("COM3")
+	log.SetFlags(log.Lshortfile)
 
-	handler.BaudRate = 115200
-	handler.DataBits = 8
-	handler.Parity = "N"
-	handler.StopBits = 1
-	handler.SlaveId = 1
-	handler.Timeout = 5 * time.Second
-
-	err := handler.Connect()
-	if err != nil {
-		return
-	}
-	defer handler.Close()
-
-	client := modbus.NewClient(handler)
-	results, err := client.WriteSingleCoil(16, 1)
-	if err != nil {
-		log.Fatal(err)
+	rtuClient := client.RTUClient{}
+	conf := serial.Config{
+		Address:  "COM3",
+		BaudRate: 115200,
+		DataBits: 8,
+		StopBits: 1,
+		Parity:   "N",
+		Timeout:  5 * time.Second,
+		RS485:    serial.RS485Config{},
 	}
 
-	fmt.Println(results)
-
-
-	
+	rtuClient.Connect(conf, 1)
+	fmt.Println(rtuClient.ReadCoils(17, 3))
+	fmt.Println(rtuClient.WriteSingleCoil(17, client.OFF))
 }
