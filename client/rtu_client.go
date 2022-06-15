@@ -97,7 +97,7 @@ func (c *RTUClient) WriteSingleRegister(address, value uint16) ([]byte, error) {
 func (c *RTUClient) WriteMultipleRegisters(address, quantity uint16, values []uint16) ([]byte, error) {
 	log.Println("WriteMultipleRegisters address:", address, "quantity:", quantity, "values", values)
 
-	bytes, err := c.uintToHexDecimalInBytes(values)
+	bytes, err := c.hexDecimalInBytes(values)
 	if err != nil {
 		log.Println(err)
 		return []byte{}, err
@@ -158,7 +158,7 @@ func (c *RTUClient) ReadWriteMultipleRegisters(readAddress uint16, readQuantity 
 		"readQuantity:", readQuantity, "writeAddress:", writeAddress,
 		"values:", values)
 
-	bytes, err := c.uintToHexDecimalInBytes(values)
+	bytes, err := c.hexDecimalInBytes(values)
 	if err != nil {
 		log.Println(err)
 		return []byte{}, err
@@ -201,6 +201,6 @@ func (c *RTUClient) MaskWriteRegister(address uint16, andMask uint16, orMask uin
 	return result, nil
 }
 
-func (c *RTUClient) uintToHexDecimalInBytes(values []uint16) ([]byte, error) {
+func (c *RTUClient) hexDecimalInBytes(values []uint16) ([]byte, error) {
 	return []byte{}, nil
 }
