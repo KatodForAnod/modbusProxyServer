@@ -50,10 +50,10 @@ func (c *RTUClient) ReadCoils(address, quantity uint16) ([]byte, error) {
 }
 
 // WriteSingleCoil - изменения состояния дискретного выхода в ON или OFF. 1 бит. Диапазон 00001-10000
-func (c *RTUClient) WriteSingleCoil(address, value uint16) ([]byte, error) {
-	log.Println("WriteSingleCoil address:", address, "value:", value)
+func (c *RTUClient) WriteSingleCoil(address uint16, coil CoilType) ([]byte, error) {
+	log.Println("WriteSingleCoil address:", address, "coil:", coil)
 
-	result, err := c.client.WriteSingleCoil(address, value)
+	result, err := c.client.WriteSingleCoil(address, coil.ToUint16())
 	if err != nil {
 		log.Println(err)
 		return []byte{}, err
