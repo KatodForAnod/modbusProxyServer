@@ -11,9 +11,9 @@ type RTUClient struct {
 	client  modbus.Client
 }
 
-func (c *RTUClient) Connect(conf serial.Config, comPort string) error {
-	log.Println("Connect with com port:", comPort)
-	c.handler = modbus.NewRTUClientHandler("COM3")
+func (c *RTUClient) Connect(conf serial.Config) error {
+	log.Println("Connect with com port:", conf.Address)
+	c.handler = modbus.NewRTUClientHandler(conf.Address)
 
 	c.handler.Config = conf
 	if err := c.handler.Connect(); err != nil {
