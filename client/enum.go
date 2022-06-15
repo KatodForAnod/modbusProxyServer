@@ -1,5 +1,7 @@
 package client
 
+import "errors"
+
 type CoilType [2]byte
 
 var ON = CoilType{0xFF, 0x00}
@@ -25,4 +27,18 @@ func (t *CoilType) String() (str string) {
 	}
 
 	return str
+}
+
+func BytesToCoilType(bytes []byte) (CoilType, error) {
+	if len(bytes) != 2 {
+		return CoilType{}, errors.New("wront type")
+	}
+
+	if bytes[0] == 255 && bytes[1] == 0 {
+		return ON, nil
+	} else if bytes[0] == 0 && bytes[1] == 0 {
+		return OFF, nil
+	}
+
+	return CoilType{}, errors.New("wront type")
 }
