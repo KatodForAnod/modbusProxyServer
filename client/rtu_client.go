@@ -12,7 +12,7 @@ type RTUClient struct {
 }
 
 func (c *RTUClient) Connect(conf serial.Config, slaveId byte) error {
-	log.Println("Connect with com port:", conf.Address)
+	log.Println("Connect RTUClient with com port:", conf.Address)
 	handler := modbus.NewRTUClientHandler(conf.Address)
 	handler.SlaveId = slaveId
 
@@ -29,7 +29,7 @@ func (c *RTUClient) Connect(conf serial.Config, slaveId byte) error {
 }
 
 func (c *RTUClient) Disconnect() error {
-	log.Println("Disconnecting from port:", c.handler.Config.Address)
+	log.Println("Disconnecting RTUClient from port:", c.handler.Config.Address)
 	if err := c.handler.Close(); err != nil {
 		log.Println(err)
 		return err
