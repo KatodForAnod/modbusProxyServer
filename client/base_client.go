@@ -8,6 +8,7 @@ import (
 )
 
 type IoTClient interface {
+	GetDeviceName() string
 	Connect(conf serial.Config, slaveId byte) error
 	Disconnect() error
 	ReadCoils(address, quantity uint16) ([]byte, error)
@@ -25,7 +26,12 @@ type IoTClient interface {
 }
 
 type BaseClient struct {
-	client modbus.Client
+	deviceName string
+	client     modbus.Client
+}
+
+func (c *BaseClient) GetDeviceName() string {
+	return c.deviceName
 }
 
 func (c *BaseClient) Connect(conf serial.Config, slaveId byte) error {
