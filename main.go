@@ -22,7 +22,7 @@ func main() {
 		RS485:    serial.RS485Config{},
 	}
 
-	rtuClient.Connect(conf, 1)
-	fmt.Println(rtuClient.ReadCoils(17, 3))
-	fmt.Println(rtuClient.WriteSingleCoil(17, client.OFF))
+	rtuClient.Connect(conf, 0x01)
+	fmt.Println(rtuClient.ReadCoils(0x11, 3))
+	fmt.Println(rtuClient.WriteSingleCoil(0x11, client.OFF))
 }
