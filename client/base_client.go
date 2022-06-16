@@ -7,6 +7,23 @@ import (
 	"log"
 )
 
+type IoTClient interface {
+	Connect(conf serial.Config, slaveId byte) error
+	Disconnect() error
+	ReadCoils(address, quantity uint16) ([]byte, error)
+	WriteSingleCoil(address uint16, coil CoilType) ([]byte, error)
+	WriteMultipleCoils(address, quantity uint16, coils []CoilType) ([]byte, error)
+	WriteSingleRegister(address, value uint16) ([]byte, error)
+	WriteMultipleRegisters(address, quantity uint16, values []uint16) ([]byte, error)
+	ReadDiscreteInputs(address, quantity uint16) ([]byte, error)
+	ReadInputRegisters(address, quantity uint16) ([]byte, error)
+	ReadHoldingRegisters(address, quantity uint16) ([]byte, error)
+	ReadWriteMultipleRegisters(readAddress uint16, readQuantity uint16,
+		writeAddress uint16, writeQuantity uint16, values []uint16) ([]byte, error)
+	ReadFIFOQueue(address uint16) ([]byte, error)
+	MaskWriteRegister(address uint16, andMask uint16, orMask uint16) ([]byte, error)
+}
+
 type BaseClient struct {
 	client modbus.Client
 }
