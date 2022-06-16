@@ -11,7 +11,7 @@ import (
 func main() {
 	log.SetFlags(log.Lshortfile)
 
-	rtuClient := client.RTUClient{}
+	rtuClient := client.BaseClient{}
 	conf := serial.Config{
 		Address:  "COM3",
 		BaudRate: 115200,
