@@ -5,6 +5,7 @@ import (
 	"github.com/goburrow/modbus"
 	"github.com/goburrow/serial"
 	"log"
+	"time"
 )
 
 type IoTClient interface {
@@ -23,6 +24,10 @@ type IoTClient interface {
 		writeAddress uint16, writeQuantity uint16, values []uint16) ([]byte, error)
 	ReadFIFOQueue(address uint16) ([]byte, error)
 	MaskWriteRegister(address uint16, andMask uint16, orMask uint16) ([]byte, error)
+
+	StartObserveInform(save func() error, duration time.Duration) error
+	IsObserveInformProcess() bool
+	StopObserveInform() error
 }
 
 type BaseClient struct {
@@ -209,4 +214,19 @@ func (c *BaseClient) MaskWriteRegister(address uint16, andMask uint16, orMask ui
 
 func (c *BaseClient) hexDecimalInBytes(values []uint16) ([]byte, error) {
 	return []byte{}, nil
+}
+
+func (c *BaseClient) StartObserveInform(save func() error, duration time.Duration) error {
+	log.Println("StartObserveInform device:", c.deviceName)
+
+	return nil
+}
+
+func (c *BaseClient) IsObserveInformProcess() bool {
+	return false
+}
+
+func (c *BaseClient) StopObserveInform() error {
+	log.Println("StopObserveInform device:", c.deviceName)
+	return nil
 }
