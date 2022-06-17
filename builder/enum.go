@@ -6,6 +6,11 @@ type ClientType struct {
 	Cl string
 }
 
+const (
+	TCPClient = "tcp"
+	RTUClient = "rtu"
+)
+
 func (t *ClientType) UnmarshalJSON(data []byte) error {
 	switch string(data) {
 	case `"tcp"`, `tcp`:
