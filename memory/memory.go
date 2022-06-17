@@ -15,7 +15,7 @@ type Memory interface {
 type MemoryFmt struct{}
 
 func (f MemoryFmt) Save(msg []byte, typeMsg MsgType, nameDevice string) error {
-	fmt.Println(string(msg))
+	fmt.Println(msg)
 	return nil
 }
 
