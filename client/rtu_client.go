@@ -4,6 +4,7 @@ import (
 	"github.com/goburrow/modbus"
 	"github.com/goburrow/serial"
 	"log"
+	"time"
 )
 
 type RTUClient struct {
@@ -11,12 +12,20 @@ type RTUClient struct {
 	BaseClient
 }
 
-func (c *RTUClient) Connect(conf serial.Config, slaveId byte) error {
-	log.Println("Connect RTUClient with com port:", conf.Address)
-	handler := modbus.NewRTUClientHandler(conf.Address)
-	handler.SlaveId = slaveId
+func (c *RTUClient) Connect() error {
+	log.Println("Connect RTUClient with com port:", c.conf.ComPort)
+	handler := modbus.NewRTUClientHandler(c.conf.ComPort)
+	handler.SlaveId = c.conf.SlaveId
 
-	handler.Config = conf
+	handler.Config = serial.Config{
+		Address:  c.conf.ComPort,
+		BaudRate: c.conf.BaudRate,
+		DataBits: c.conf.DataBits,
+		StopBits: c.conf.StopBits,
+		Parity:   c.conf.Parity,
+		Timeout:  time.Duration(c.conf.TimeoutSeconds) * time.Second,
+		RS485:    serial.RS485Config{},
+	}
 	if err := handler.Connect(); err != nil {
 		log.Println(err)
 		return err

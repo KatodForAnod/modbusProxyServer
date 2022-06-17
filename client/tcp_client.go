@@ -2,7 +2,6 @@ package client
 
 import (
 	"github.com/goburrow/modbus"
-	"github.com/goburrow/serial"
 	"log"
 )
 
@@ -11,12 +10,12 @@ type TCPClient struct {
 	BaseClient
 }
 
-func (c *TCPClient) Connect(conf serial.Config, slaveId byte) error {
-	log.Println("Connect TCPClient with com port:", conf.Address)
-	handler := modbus.NewTCPClientHandler(conf.Address)
-	handler.SlaveId = slaveId
+func (c *TCPClient) Connect() error {
+	log.Println("Connect TCPClient with com port:", c.conf.ComPort)
+	handler := modbus.NewTCPClientHandler(c.conf.ComPort)
+	handler.SlaveId = c.conf.SlaveId
 
-	handler.Address = conf.Address
+	handler.Address = c.conf.ComPort
 	if err := handler.Connect(); err != nil {
 		log.Println(err)
 		return err

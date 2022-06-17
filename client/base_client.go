@@ -3,14 +3,14 @@ package client
 import (
 	"errors"
 	"github.com/goburrow/modbus"
-	"github.com/goburrow/serial"
 	"log"
+	"modbusprottocol/config"
 	"time"
 )
 
 type IoTClient interface {
 	GetDeviceName() string
-	Connect(conf serial.Config, slaveId byte) error
+	Connect() error
 	Disconnect() error
 	ReadCoils(address, quantity uint16) ([]byte, error)
 	WriteSingleCoil(address uint16, coil CoilType) ([]byte, error)
@@ -34,18 +34,20 @@ type BaseClient struct {
 	deviceName             string
 	client                 modbus.Client
 	isObserveInformProcess *bool
+	conf                   config.IotConfig
 }
 
-func (c *BaseClient) Init(deviceName string) {
+func (c *BaseClient) Init(conf config.IotConfig) {
 	c.isObserveInformProcess = new(bool)
-	c.deviceName = deviceName
+	c.deviceName = conf.DeviceName
+	c.conf = conf
 }
 
 func (c *BaseClient) GetDeviceName() string {
 	return c.deviceName
 }
 
-func (c *BaseClient) Connect(conf serial.Config, slaveId byte) error {
+func (c *BaseClient) Connect() error {
 	return errors.New("base client - override this method")
 }
 
