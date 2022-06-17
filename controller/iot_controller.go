@@ -91,20 +91,21 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 			log.Println(err)
 			return err
 		}
-
+		//  memory.MsgType{}??
 		if err := c.mem.Save(coils, memory.MsgType{}, iot.GetDeviceName()); err != nil {
 			log.Println(err)
 			return err
 		}
 
-		timer.Reset(d)
+		timer.Reset(d + delay)
 		return nil
 	}
 
-	err := iot.StartObserveInform(saveFunc, d)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
+	go func() {
+		err := iot.StartObserveInform(saveFunc, d)
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	return nil
 }
