@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"modbusprottocol/builder"
 )
 
 type Config struct {
@@ -12,13 +13,14 @@ type Config struct {
 }
 
 type IotConfig struct {
-	ComPort           string `json:"com_port"`
-	BaudRate          int    `json:"baud_rate"`
-	DataBits          int    `json:"data_bits"`
-	StopBits          int    `json:"stop_bits"`
-	Parity            string `json:"parity"`
-	TimeoutSeconds    int    `json:"timeout_seconds"`
-	TypeIotConnection string `json:"type_iot_connection"`
+	TypeClient        builder.ClientType `json:"type_client"`
+	ComPort           string             `json:"com_port"`
+	BaudRate          int                `json:"baud_rate"`
+	DataBits          int                `json:"data_bits"`
+	StopBits          int                `json:"stop_bits"`
+	Parity            string             `json:"parity"`
+	TimeoutSeconds    int                `json:"timeout_seconds"`
+	TypeIotConnection string             `json:"type_iot_connection"`
 }
 
 const configPath = "conf.config"
