@@ -13,7 +13,9 @@ type Config struct {
 }
 
 type IotConfig struct {
+	DeviceName        string             `json:"device_name"`
 	TypeClient        builder.ClientType `json:"type_client"`
+	SlaveId           byte               `json:"slave_id"`
 	ComPort           string             `json:"com_port"`
 	BaudRate          int                `json:"baud_rate"`
 	DataBits          int                `json:"data_bits"`
