@@ -15,6 +15,7 @@ type IoTsController struct {
 
 func (c *IoTsController) Init(mem memory.Memory) {
 	c.ioTDevices = make(map[string]client.IoTClient)
+	c.mem = mem
 }
 
 func (c *IoTsController) GetIoTsClients(deviceName []string) (founded []client.IoTClient, err error) {
