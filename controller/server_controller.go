@@ -2,6 +2,7 @@ package controller
 
 import (
 	"log"
+	"modbusprottocol/client"
 	"modbusprottocol/logsetting"
 	"modbusprottocol/memory"
 )
@@ -38,4 +39,27 @@ func (c *Controller) GetLastNRowsLogs(nRows int) ([]string, error) {
 	}
 
 	return logs, nil
+}
+
+func (c *Controller) AddIoTDevice(device client.IoTClient) error {
+	log.Println("controller AddIoTDevice")
+	err := c.ioTsController.AddIoTsClients([]client.IoTClient{device})
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
+
+func (c *Controller) RmIoTDevice(deviceName string) error {
+	log.Println("controller RmIoTDevice")
+
+	err := c.ioTsController.RemoveIoTsClients([]string{deviceName})
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
 }
