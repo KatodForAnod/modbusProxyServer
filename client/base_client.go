@@ -36,7 +36,10 @@ type BaseClient struct {
 	isObserveInformProcess *bool
 }
 
-// init func?
+func (c *BaseClient) Init(deviceName string) {
+	c.deviceName = deviceName
+}
+
 func (c *BaseClient) GetDeviceName() string {
 	return c.deviceName
 }
