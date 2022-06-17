@@ -3,8 +3,8 @@ package controller
 import (
 	"errors"
 	"log"
-	"modbusprottocol/client"
-	"modbusprottocol/memory"
+	"modbusProxyServer/client"
+	"modbusProxyServer/memory"
 	"time"
 )
 

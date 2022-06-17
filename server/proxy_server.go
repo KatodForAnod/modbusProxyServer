@@ -3,8 +3,8 @@ package server
 import (
 	"fmt"
 	"log"
-	"modbusprottocol/config"
-	"modbusprottocol/controller"
+	"modbusProxyServer/config"
+	"modbusProxyServer/controller"
 	"net/http"
 	"strconv"
 	"strings"

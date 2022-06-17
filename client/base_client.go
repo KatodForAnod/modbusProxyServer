@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/goburrow/modbus"
 	"log"
-	"modbusprottocol/config"
+	"modbusProxyServer/config"
 	"time"
 )
 

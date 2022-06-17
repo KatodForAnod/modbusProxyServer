@@ -2,11 +2,11 @@ package main
 
 import (
 	"log"
-	"modbusprottocol/builder"
-	"modbusprottocol/client"
-	"modbusprottocol/config"
-	"modbusprottocol/controller"
-	"modbusprottocol/memory"
+	"modbusProxyServer/builder"
+	"modbusProxyServer/client"
+	"modbusProxyServer/config"
+	"modbusProxyServer/controller"
+	"modbusProxyServer/memory"
 	"time"
 )
 

@@ -2,8 +2,8 @@ package builder
 
 import (
 	"errors"
-	"modbusprottocol/client"
-	"modbusprottocol/config"
+	"modbusProxyServer/client"
+	"modbusProxyServer/config"
 )
 
 type BuildClient struct {

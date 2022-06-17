@@ -1,4 +1,4 @@
-module modbusprottocol
+module modbusProxyServer
 
 go 1.17
 

@@ -2,9 +2,9 @@ package controller
 
 import (
 	"log"
-	"modbusprottocol/client"
-	"modbusprottocol/logsetting"
-	"modbusprottocol/memory"
+	"modbusProxyServer/client"
+	"modbusProxyServer/logsetting"
+	"modbusProxyServer/memory"
 )
 
 type Controller struct {
