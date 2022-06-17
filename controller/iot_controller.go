@@ -49,6 +49,31 @@ func (c *IoTsController) AddIoTsClients(devices []client.IoTClient) error {
 	return nil
 }
 
+func (c IoTsController) RemoveIoTsClients(devicesName []string) error {
+	log.Println("RemoveIoTsClients")
+	var founded []client.IoTClient
+	for _, deviceName := range devicesName {
+		if iot, isExist := c.ioTDevices[deviceName]; !isExist {
+			err := errors.New("device " + deviceName + " not exist")
+			log.Println(err)
+			return err
+		} else {
+			founded = append(founded, iot)
+		}
+	}
+
+	for _, tClient := range founded {
+		if tClient.IsObserveInformProcess() {
+			if err := tClient.StopObserveInform(); err != nil {
+				log.Println(err)
+			}
+		}
+		delete(c.ioTDevices, tClient.GetDeviceName())
+	}
+
+	return nil
+}
+
 func (c *IoTsController) ObserveFIFOQueue(deviceName string, address uint16) error {
 	return errors.New("func not work")
 }
