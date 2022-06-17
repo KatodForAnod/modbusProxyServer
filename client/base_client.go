@@ -37,6 +37,7 @@ type BaseClient struct {
 }
 
 func (c *BaseClient) Init(deviceName string) {
+	c.isObserveInformProcess = new(bool)
 	c.deviceName = deviceName
 }
 
@@ -223,6 +224,14 @@ func (c *BaseClient) hexDecimalInBytes(values []uint16) ([]byte, error) {
 
 func (c *BaseClient) StartObserveInform(save func() error, duration time.Duration) error {
 	log.Println("StartObserveInform device:", c.deviceName)
+	if *c.isObserveInformProcess {
+		err := errors.New("already observe")
+		log.Println(err)
+		return err
+	}
+
+	tr := true
+	c.isObserveInformProcess = &tr
 
 	for *c.isObserveInformProcess {
 		if err := save(); err != nil {
