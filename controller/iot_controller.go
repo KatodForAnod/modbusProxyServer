@@ -44,6 +44,11 @@ func (c *IoTsController) AddIoTsClients(devices []client.IoTClient) error {
 	}
 
 	for _, device := range devices {
+		err := device.Connect()
+		if err != nil {
+			log.Println(err)
+			continue
+		}
 		c.ioTDevices[device.GetDeviceName()] = device
 	}
 	return nil
@@ -67,6 +72,9 @@ func (c IoTsController) RemoveIoTsClients(devicesName []string) error {
 			if err := tClient.StopObserveInform(); err != nil {
 				log.Println(err)
 			}
+		}
+		if err := tClient.Disconnect(); err != nil {
+			log.Println(err)
 		}
 		delete(c.ioTDevices, tClient.GetDeviceName())
 	}
