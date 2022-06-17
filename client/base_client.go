@@ -31,10 +31,12 @@ type IoTClient interface {
 }
 
 type BaseClient struct {
-	deviceName string
-	client     modbus.Client
+	deviceName             string
+	client                 modbus.Client
+	isObserveInformProcess *bool
 }
 
+// init func?
 func (c *BaseClient) GetDeviceName() string {
 	return c.deviceName
 }
@@ -219,14 +221,22 @@ func (c *BaseClient) hexDecimalInBytes(values []uint16) ([]byte, error) {
 func (c *BaseClient) StartObserveInform(save func() error, duration time.Duration) error {
 	log.Println("StartObserveInform device:", c.deviceName)
 
+	for *c.isObserveInformProcess {
+		if err := save(); err != nil {
+			log.Println(err)
+		}
+		time.Sleep(duration)
+	}
 	return nil
 }
 
 func (c *BaseClient) IsObserveInformProcess() bool {
-	return false
+	return *c.isObserveInformProcess
 }
 
 func (c *BaseClient) StopObserveInform() error {
 	log.Println("StopObserveInform device:", c.deviceName)
+	fl := false
+	c.isObserveInformProcess = &fl
 	return nil
 }
