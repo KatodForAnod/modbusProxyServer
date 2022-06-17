@@ -32,7 +32,7 @@ type IoTClient interface {
 
 type BaseClient struct {
 	deviceName             string
-	clientType             ClientType
+	clientType             config.ClientType
 	client                 modbus.Client
 	isObserveInformProcess *bool
 	conf                   config.IotConfig

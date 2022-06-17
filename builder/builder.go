@@ -10,11 +10,11 @@ type BuildClient struct {
 }
 
 func (c *BuildClient) BuildClient(iotConfig config.IotConfig) (client.IoTClient, error) {
-	if client.TCPClientType == iotConfig.TypeClient.String() {
+	if config.TCPClientType == iotConfig.TypeClient.String() {
 		tcpClient := client.TCPClient{}
 		tcpClient.Init(iotConfig)
 		return &tcpClient, nil
-	} else if client.RTUClientType == iotConfig.TypeClient.String() {
+	} else if config.RTUClientType == iotConfig.TypeClient.String() {
 		rtuClient := client.RTUClient{}
 		rtuClient.Init(iotConfig)
 		return &rtuClient, nil
