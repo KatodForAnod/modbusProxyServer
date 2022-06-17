@@ -32,6 +32,7 @@ type IoTClient interface {
 
 type BaseClient struct {
 	deviceName             string
+	clientType             ClientType
 	client                 modbus.Client
 	isObserveInformProcess *bool
 	conf                   config.IotConfig
@@ -41,6 +42,7 @@ func (c *BaseClient) Init(conf config.IotConfig) {
 	c.isObserveInformProcess = new(bool)
 	c.deviceName = conf.DeviceName
 	c.conf = conf
+	c.clientType = conf.TypeClient
 }
 
 func (c *BaseClient) GetDeviceName() string {
