@@ -145,6 +145,7 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 }
 
 func (c *IoTsController) StopObserveIoTDevice(deviceName string) error {
+	log.Println("Stop observe device:", deviceName)
 	iot, isExist := c.ioTDevices[deviceName]
 	if !isExist {
 		err := errors.New("device not exist")
