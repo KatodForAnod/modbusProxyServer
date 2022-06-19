@@ -2,7 +2,9 @@ package controller
 
 import (
 	"log"
+	"modbusProxyServer/builder"
 	"modbusProxyServer/client"
+	"modbusProxyServer/config"
 	"modbusProxyServer/logsetting"
 	"modbusProxyServer/memory"
 )
@@ -41,9 +43,17 @@ func (c *Controller) GetLastNRowsLogs(nRows int) ([]string, error) {
 	return logs, nil
 }
 
-func (c *Controller) AddIoTDevice(device client.IoTClient) error {
+func (c *Controller) AddIoTDevice(device config.IotConfig) error {
 	log.Println("controller AddIoTDevice")
-	err := c.ioTsController.AddIoTsClients([]client.IoTClient{device})
+
+	buildClient := builder.BuildClient{}
+	iotClient, err := buildClient.BuildClient(device)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	err = c.ioTsController.AddIoTsClients([]client.IoTClient{iotClient})
 	if err != nil {
 		log.Println(err)
 		return err
