@@ -16,6 +16,11 @@ type Controller struct {
 	ioTsController IoTsController
 }
 
+func (c *Controller) Init(mem memory.Memory, controller IoTsController) {
+	c.mem = mem
+	c.ioTsController = controller
+}
+
 func (c *Controller) GetInformation(deviceName string) ([]byte, error) {
 	log.Println("controller get information of iot device", deviceName)
 
