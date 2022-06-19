@@ -35,6 +35,7 @@ type BaseClient struct {
 	clientType             config.ClientType
 	client                 modbus.Client
 	isObserveInformProcess *bool
+	stopObserve            chan bool
 	conf                   config.IotConfig
 }
 
@@ -43,6 +44,7 @@ func (c *BaseClient) Init(conf config.IotConfig) {
 	c.deviceName = conf.DeviceName
 	c.conf = conf
 	c.clientType = conf.TypeClient
+	c.stopObserve = make(chan bool)
 }
 
 func (c *BaseClient) GetDeviceName() string {
@@ -237,13 +239,20 @@ func (c *BaseClient) StartObserveInform(save func() error, duration time.Duratio
 	tr := true
 	c.isObserveInformProcess = &tr
 
-	for *c.isObserveInformProcess {
-		if err := save(); err != nil {
-			log.Println(err)
+	for {
+		select {
+		case <-time.After(duration):
+			for *c.isObserveInformProcess {
+				if err := save(); err != nil {
+					log.Println(err)
+				}
+			}
+		case <-c.stopObserve:
+			fl := false
+			c.isObserveInformProcess = &fl
+			return nil
 		}
-		time.Sleep(duration) //FIXME if stopObserve() and run again, sleep is a bad choice, need to use select
 	}
-	return nil
 }
 
 func (c *BaseClient) IsObserveInformProcess() bool {
@@ -252,7 +261,19 @@ func (c *BaseClient) IsObserveInformProcess() bool {
 
 func (c *BaseClient) StopObserveInform() error {
 	log.Println("StopObserveInform device:", c.deviceName)
-	fl := false
-	c.isObserveInformProcess = &fl
+	if !c.IsObserveInformProcess() {
+		err := errors.New("device " + c.deviceName + " not observing")
+		log.Println(err)
+		return err
+	}
+
+	select {
+	case c.stopObserve <- true:
+	default:
+		err := errors.New("StopObserveInform cant stop thread")
+		log.Println(err)
+		return err
+	}
+
 	return nil
 }
