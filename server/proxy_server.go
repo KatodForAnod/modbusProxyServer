@@ -131,6 +131,50 @@ func (s *Server) getLogs(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) observeDeviceCoils(w http.ResponseWriter, r *http.Request) {
+	log.Println("handler ObserveDeviceCoils")
+	defer r.Body.Close()
+
+	deviceNames := r.URL.Query()["deviceName"]
+	if len(deviceNames) == 0 {
+		log.Println("device name not found")
+		fmt.Fprintf(w, "set device name")
+		return
+	}
+	deviceName := deviceNames[0]
+
+	addresses := r.URL.Query()["address"]
+	if len(deviceNames) == 0 {
+		log.Println("address not found")
+		fmt.Fprintf(w, "set address")
+		return
+	}
+	address := addresses[0]
+
+	quantity := r.URL.Query()["quantity"]
+	if len(deviceNames) == 0 {
+		log.Println("quantity not found")
+		fmt.Fprintf(w, "set quantity")
+		return
+	}
+	quant := quantity[0]
+
+	times := r.URL.Query()["time"]
+	if len(deviceNames) == 0 {
+		log.Println("time not found")
+		fmt.Fprintf(w, "set time")
+		return
+	}
+	time := times[0]
+
+	err := s.controller.ObserveIoTCoils(deviceName, address, quant, time)
+	if err != nil {
+		log.Println(err)
+		fmt.Fprintf(w, "wrong params")
+		return
+	}
+}
+
 func (s *Server) StartServer(config config.Config, controller controller.Controller) {
 	s.controller = controller
 
@@ -139,7 +183,7 @@ func (s *Server) StartServer(config config.Config, controller controller.Control
 	http.HandleFunc("/device/add", s.addIoTDevice)
 	http.HandleFunc("/device/rm", s.rmIoTDevice)
 	http.HandleFunc("/device/observer/stop", s.stopObserveDevice)
-	//	http.HandleFunc("/device/observer/start", nil)
+	http.HandleFunc("/device/observer/coils/start", s.observeDeviceCoils)
 
 	fmt.Println("Server is listening... ", config.ProxyServerAddr)
 	log.Fatal(http.ListenAndServe(config.ProxyServerAddr, nil))

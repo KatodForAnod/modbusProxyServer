@@ -7,6 +7,8 @@ import (
 	"modbusProxyServer/config"
 	"modbusProxyServer/logsetting"
 	"modbusProxyServer/memory"
+	"strconv"
+	"time"
 )
 
 type Controller struct {
@@ -78,6 +80,33 @@ func (c *Controller) StopObserveDevice(deviceName string) error {
 	log.Println("controller stop observe device")
 
 	if err := c.ioTsController.StopObserveIoTDevice(deviceName); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
+
+func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsDuration string) error {
+	log.Println("controller ObserveIoTCoils deviceName:", deviceName)
+	quantityUint, err := strconv.ParseUint(quantity, 10, 16)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	addressUint, err := strconv.ParseUint(address, 10, 16)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	timeInt, err := strconv.ParseInt(timeSecondsDuration, 10, 64)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	if err := c.ioTsController.ObserveCoils(deviceName,
+		uint16(addressUint), uint16(quantityUint), time.Duration(timeInt)); err != nil {
 		log.Println(err)
 		return err
 	}
