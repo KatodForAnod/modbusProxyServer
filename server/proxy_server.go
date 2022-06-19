@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"modbusProxyServer/config"
@@ -12,6 +13,63 @@ import (
 
 type Server struct {
 	controller controller.Controller
+}
+
+func (s *Server) addIoTDevice(w http.ResponseWriter, r *http.Request) {
+	log.Println("handler addIoTDevice")
+	defer r.Body.Close()
+
+	var iotDev config.IotConfig
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&iotDev); err != nil {
+		log.Println(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	if err := s.controller.AddIoTDevice(iotDev); err != nil {
+		log.Println(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (s *Server) rmIoTDevice(w http.ResponseWriter, r *http.Request) {
+	log.Println("handler rmIoTDevice")
+	defer r.Body.Close()
+
+	deviceNames := r.URL.Query()["deviceName"]
+	if len(deviceNames) == 0 {
+		log.Println("device name not found")
+		fmt.Fprintf(w, "set device name")
+		return
+	}
+	deviceName := deviceNames[0]
+
+	if err := s.controller.RmIoTDevice(deviceName); err != nil {
+		log.Println(err)
+		fmt.Fprintf(w, "wrong device name")
+		return
+	}
+}
+
+func (s *Server) stopObserveDevice(w http.ResponseWriter, r *http.Request) {
+	log.Println("handler stopObserveDevice")
+	defer r.Body.Close()
+
+	deviceNames := r.URL.Query()["deviceName"]
+	if len(deviceNames) == 0 {
+		log.Println("device name not found")
+		fmt.Fprintf(w, "set device name")
+		return
+	}
+	deviceName := deviceNames[0]
+
+	if err := s.controller.StopObserveDevice(deviceName); err != nil {
+		log.Println(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
 }
 
 func (s *Server) getInformationFromIotDevice(w http.ResponseWriter, r *http.Request) {
@@ -78,6 +136,10 @@ func (s *Server) StartServer(config config.Config, controller controller.Control
 
 	http.HandleFunc("/device/metrics", s.getInformationFromIotDevice)
 	http.HandleFunc("/logs", s.getLogs)
+	http.HandleFunc("/device/add", s.addIoTDevice)
+	http.HandleFunc("/device/rm", s.rmIoTDevice)
+	http.HandleFunc("/device/observer/stop", s.stopObserveDevice)
+	//	http.HandleFunc("/device/observer/start", nil)
 
 	fmt.Println("Server is listening... ", config.ProxyServerAddr)
 	log.Fatal(http.ListenAndServe(config.ProxyServerAddr, nil))
