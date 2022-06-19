@@ -242,7 +242,7 @@ func (c *BaseClient) StartObserveInform(save func() error, duration time.Duratio
 	for {
 		select {
 		case <-time.After(duration):
-			for *c.isObserveInformProcess {
+			if *c.isObserveInformProcess {
 				if err := save(); err != nil {
 					log.Println(err)
 				}
