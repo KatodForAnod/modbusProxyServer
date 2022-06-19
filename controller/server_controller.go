@@ -73,3 +73,14 @@ func (c *Controller) RmIoTDevice(deviceName string) error {
 
 	return nil
 }
+
+func (c *Controller) StopObserveDevice(deviceName string) error {
+	log.Println("controller stop observe device")
+
+	if err := c.ioTsController.StopObserveIoTDevice(deviceName); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
