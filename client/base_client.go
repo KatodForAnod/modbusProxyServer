@@ -241,7 +241,7 @@ func (c *BaseClient) StartObserveInform(save func() error, duration time.Duratio
 		if err := save(); err != nil {
 			log.Println(err)
 		}
-		time.Sleep(duration)
+		time.Sleep(duration) //FIXME if stopObserve() and run again, sleep is a bad choice, need to use select
 	}
 	return nil
 }
