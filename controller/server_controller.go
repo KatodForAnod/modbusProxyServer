@@ -111,7 +111,7 @@ func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsD
 	}
 
 	if err := c.ioTsController.ObserveCoils(deviceName,
-		uint16(addressUint), uint16(quantityUint), time.Duration(timeInt)); err != nil {
+		uint16(addressUint), uint16(quantityUint), time.Duration(timeInt)*time.Second); err != nil {
 		log.Println(err)
 		return err
 	}
