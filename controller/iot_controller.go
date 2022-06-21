@@ -54,7 +54,7 @@ func (c *IoTsController) AddIoTsClients(devices []client.IoTClient) error {
 	return nil
 }
 
-func (c IoTsController) RemoveIoTsClients(devicesName []string) error {
+func (c *IoTsController) RemoveIoTsClients(devicesName []string) error {
 	log.Println("RemoveIoTsClients")
 	var founded []client.IoTClient
 	for _, deviceName := range devicesName {
