@@ -104,7 +104,7 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 	if !isExist {
 		err := errors.New("device not exist")
 		log.Println(err)
-
+		return err
 	}
 
 	if iot.IsObserveInformProcess() {

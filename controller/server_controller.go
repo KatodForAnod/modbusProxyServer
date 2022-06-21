@@ -16,6 +16,11 @@ type Controller struct {
 	ioTsController IoTsController
 }
 
+func (c *Controller) Init(mem memory.Memory, controller IoTsController) {
+	c.mem = mem
+	c.ioTsController = controller
+}
+
 func (c *Controller) GetInformation(deviceName string) ([]byte, error) {
 	log.Println("controller get information of iot device", deviceName)
 
@@ -106,7 +111,7 @@ func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsD
 	}
 
 	if err := c.ioTsController.ObserveCoils(deviceName,
-		uint16(addressUint), uint16(quantityUint), time.Duration(timeInt)); err != nil {
+		uint16(addressUint), uint16(quantityUint), time.Duration(timeInt)*time.Second); err != nil {
 		log.Println(err)
 		return err
 	}

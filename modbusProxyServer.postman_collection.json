@@ -1,0 +1,214 @@
+{
+  "info": {
+    "_postman_id": "3ac36a7a-f0de-4b45-9c5f-a34cba1c1569",
+    "name": "modbusProxyServer",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "127.0.0.1:8000/device/metrics?deviceName=testName",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:8000/device/metrics?deviceName=testName",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "device",
+            "metrics"
+          ],
+          "query": [
+            {
+              "key": "deviceName",
+              "value": "testName"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "127.0.0.1:8080/device/rm?deviceName=testName",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:8080/device/rm?deviceName=testName",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "device",
+            "rm"
+          ],
+          "query": [
+            {
+              "key": "deviceName",
+              "value": "testName"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "127.0.0.1:8080/device/add",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": " {\"device_name\":\"testName\",\r\n        \"type_client\":\"rtu\",\r\n        \"slave_id\": 1,\r\n        \"com_port\":\"COM3\",\r\n        \"baud_rate\": 115200,\r\n        \"data_bits\": 8,\r\n        \"stop_bits\": 1,\r\n        \"parity\":\"N\",\r\n        \"timeout_seconds\":5}"
+        },
+        "url": {
+          "raw": "127.0.0.1:8080/device/add",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "device",
+            "add"
+          ],
+          "query": [
+            {
+              "key": "devicename",
+              "value": "testDevice",
+              "disabled": true
+            },
+            {
+              "key": "address",
+              "value": "1",
+              "disabled": true
+            },
+            {
+              "key": "quantity",
+              "value": "1",
+              "disabled": true
+            },
+            {
+              "key": "time",
+              "value": "1",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "127.0.0.1:8080/device/observer/coils/start?deviceName=testName&address=1&quantity=1&time=1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:8080/device/observer/coils/start?deviceName=testName&address=1&quantity=1&time=1",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "device",
+            "observer",
+            "coils",
+            "start"
+          ],
+          "query": [
+            {
+              "key": "deviceName",
+              "value": "testName"
+            },
+            {
+              "key": "address",
+              "value": "1"
+            },
+            {
+              "key": "quantity",
+              "value": "1"
+            },
+            {
+              "key": "time",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "127.0.0.1:8080/device/observer/stop?deviceName=testName",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:8080/device/observer/stop?deviceName=testName",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "device",
+            "observer",
+            "stop"
+          ],
+          "query": [
+            {
+              "key": "deviceName",
+              "value": "testName"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "127.0.0.1:8080/logs?countLogs=50",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:8080/logs?countLogs=50",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "logs"
+          ],
+          "query": [
+            {
+              "key": "countLogs",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -2,16 +2,18 @@ package main
 
 import (
 	"log"
-	"modbusProxyServer/builder"
-	"modbusProxyServer/client"
 	"modbusProxyServer/config"
 	"modbusProxyServer/controller"
 	"modbusProxyServer/memory"
-	"time"
+	"modbusProxyServer/server"
 )
 
 func main() {
 	log.SetFlags(log.Lshortfile)
+	/*err := logsetting.LogInit()
+	if err != nil {
+		log.Fatal(err)
+	}*/
 
 	iotControll := controller.IoTsController{}
 	mem := memory.MemoryFmt{}
@@ -23,19 +25,11 @@ func main() {
 		return
 	}
 
-	buildClient := builder.BuildClient{}
-	var clients []client.IoTClient
-	for _, device := range conf.IoTsDevices {
-		ioTClient, err := buildClient.BuildClient(device)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		clients = append(clients, ioTClient)
-	}
+	serv_controller := controller.Controller{}
+	serv_controller.Init(mem, iotControll)
 
-	iotControll.AddIoTsClients(clients)
-	//iotControll.ObserveCoils("testDevice", 0x11, 3, time.Second)
-	time.Sleep(time.Second * 10)
+	serv := server.Server{}
+	serv.StartServer(conf, serv_controller)
+
 	return
 }
