@@ -23,7 +23,7 @@ type IotConfig struct {
 	TimeoutSeconds int        `json:"timeout_seconds"`
 }
 
-const configPath = "conf.config"
+var configPath = "conf.config"
 
 func LoadConfig() (loadedConf Config, err error) {
 	data, err := ioutil.ReadFile(configPath)
