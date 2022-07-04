@@ -144,7 +144,7 @@ func (s *Server) observeDeviceCoils(w http.ResponseWriter, r *http.Request) {
 	deviceName := deviceNames[0]
 
 	addresses := r.URL.Query()["address"]
-	if len(deviceNames) == 0 {
+	if len(addresses) == 0 {
 		log.Println("address not found")
 		fmt.Fprintf(w, "set address")
 		return
@@ -152,7 +152,7 @@ func (s *Server) observeDeviceCoils(w http.ResponseWriter, r *http.Request) {
 	address := addresses[0]
 
 	quantity := r.URL.Query()["quantity"]
-	if len(deviceNames) == 0 {
+	if len(quantity) == 0 {
 		log.Println("quantity not found")
 		fmt.Fprintf(w, "set quantity")
 		return
