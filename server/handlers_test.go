@@ -17,7 +17,8 @@ var (
 const serverAddr = "127.0.0.1:8080"
 
 type Controller struct {
-	ioTs []config.IotConfig
+	ioTs        []config.IotConfig
+	iotObserver string
 }
 
 func (c *Controller) AddIoTDevice(device config.IotConfig) error {
@@ -36,11 +37,17 @@ func (c *Controller) RmIoTDevice(deviceName string) error {
 }
 
 func (c *Controller) StopObserveDevice(deviceName string) error {
-	panic("implement me")
+	if c.iotObserver == "" {
+		return errors.New("device not found")
+	}
+
+	c.iotObserver = ""
+	return nil
 }
 
 func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsDuration string) error {
-	panic("implement me")
+	c.iotObserver = deviceName
+	return nil
 }
 
 func (c *Controller) GetLastNRowsLogs(nRows int) ([]string, error) {
@@ -136,6 +143,17 @@ func TestServer_rmIotDevice(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceName=testName", nil)
 	w := httptest.NewRecorder()
 	proxyServer.rmIoTDevice(w, req)
+
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
+func TestServer_observeCoils(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet,
+		"/device/observer/coils/start?deviceName=testName&address=1&quantity=1&time=1", nil)
+	w := httptest.NewRecorder()
+	proxyServer.observeDeviceCoils(w, req)
 
 	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
