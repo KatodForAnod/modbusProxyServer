@@ -45,3 +45,24 @@ func TestBuildClient_BuildClient2(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestBuildClient_BuildClient3(t *testing.T) {
+	builder := BuildClient{}
+	conf := config.IotConfig{
+		DeviceName:     "qwerty",
+		TypeClient:     config.ClientType{Cl: config.RTUClientType},
+		SlaveId:        0,
+		ComPort:        "",
+		BaudRate:       0,
+		DataBits:       0,
+		StopBits:       0,
+		Parity:         "",
+		TimeoutSeconds: 0,
+	}
+
+	_, err := builder.BuildClient(conf)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
