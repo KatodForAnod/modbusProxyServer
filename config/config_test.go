@@ -26,14 +26,14 @@ const confBody2 = `{
 func createConfig(t *testing.T, confBody string) (filePath string, err error) {
 	file, err := os.CreateTemp("", configPath)
 	if err != nil {
-		t.Error("cant create temp conf file")
+		t.Errorf("cant create temp conf file: unexpected error: %s", err)
 		return "", err
 	}
 	defer file.Close()
 
 	_, err = file.WriteString(confBody)
 	if err != nil {
-		t.Error("cant write to temp conf file")
+		t.Errorf("cant write to temp conf file: unexpected error: %s", err)
 		return "", err
 	}
 
@@ -43,16 +43,17 @@ func createConfig(t *testing.T, confBody string) (filePath string, err error) {
 func deleteConfig(filePath string, t *testing.T) error {
 	err := os.Remove(filePath)
 	if err != nil {
-		t.Error("cant delete temp conf file")
+		t.Errorf("cant delete temp conf file: unexpected error: %s", err)
 		return err
 	}
 	return nil
 }
 
 func TestLoadConfig_Success(t *testing.T) {
+	t.Log("testing loading config")
 	filePath, err := createConfig(t, confBody)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("function createConfig() is corrupted: unexpected error: %s", err)
 		return
 	}
 
@@ -70,15 +71,16 @@ func TestLoadConfig_Success(t *testing.T) {
 
 	_, err = LoadConfig()
 	if err != nil {
-		t.Error(err)
+		t.Errorf("function LoadConfig() is corrupted: unexpected error: %s", err)
 		return
 	}
 }
 
 func TestLoadConfig_Fail(t *testing.T) {
+	t.Log("testing unsuccessful loading config")
 	filePath, err := createConfig(t, confBody2)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("function createConfig() is corrupted: unexpected error: %s", err)
 		return
 	}
 
@@ -96,7 +98,7 @@ func TestLoadConfig_Fail(t *testing.T) {
 
 	_, err = LoadConfig()
 	if err == nil {
-		t.FailNow()
+		t.Error("LoadConfig() should return error in that case")
 		return
 	}
 }
