@@ -103,8 +103,29 @@ func TestServer_addIotDevice(t *testing.T) {
 	}
 }
 
+func TestServer_addIotDeviceFails(t *testing.T) {
+	log.SetFlags(log.Lshortfile)
+	myReader := strings.NewReader(`{"device_name":"testName",
+        "type_client":"notValid",
+        "slave_id": 1,
+        "com_port":"COM3",
+        "baud_rate": 115200,
+        "data_bits": 8,
+        "stop_bits": 1,
+        "parity":"N",
+        "timeout_seconds":5}`)
+
+	req := httptest.NewRequest(http.MethodGet, "/device/add", myReader)
+	w := httptest.NewRecorder()
+
+	proxyServer.addIoTDevice(w, req)
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
 func TestServer_getInformationFromIotDevice(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/device/metrics?deviceName=testName", nil)
+	req := httptest.NewRequest(http.MethodGet, "/device/metrics?deviceName=testName2", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getInformationFromIotDevice(w, req)
 
