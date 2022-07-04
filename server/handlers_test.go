@@ -159,3 +159,14 @@ func TestServer_observeCoils(t *testing.T) {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 }
+
+func TestServer_stopObserve(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet,
+		"/device/observer/stop?deviceName=testName", nil)
+	w := httptest.NewRecorder()
+	proxyServer.stopObserveDevice(w, req)
+
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
