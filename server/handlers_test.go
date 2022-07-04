@@ -190,6 +190,16 @@ func TestServer_rmIotDevice(t *testing.T) {
 	}
 }
 
+func TestServer_rmIotDeviceFail(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceName=", nil)
+	w := httptest.NewRecorder()
+	proxyServer.rmIoTDevice(w, req)
+
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
 func TestServer_observeCoils(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet,
 		"/device/observer/coils/start?deviceName=testName&address=1&quantity=1&time=1", nil)
