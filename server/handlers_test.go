@@ -2,6 +2,7 @@ package server
 
 import (
 	"errors"
+	"log"
 	"modbusProxyServer/config"
 	"net/http"
 	"net/http/httptest"
@@ -20,7 +21,8 @@ type Controller struct {
 }
 
 func (c *Controller) AddIoTDevice(device config.IotConfig) error {
-	panic("implement me")
+	c.ioTs = append(c.ioTs, device)
+	return nil
 }
 
 func (c *Controller) RmIoTDevice(deviceName string) error {
@@ -68,10 +70,21 @@ func Init() {
 
 func TestServer_addIotDevice(t *testing.T) {
 	go Init()
-	req := httptest.NewRequest(http.MethodGet, "/device/add?deviceName=testName&deviceAddr=:5600", nil)
-	w := httptest.NewRecorder()
-	proxyServer.getLogs(w, req)
+	log.SetFlags(log.Lshortfile)
+	myReader := strings.NewReader(`{"device_name":"testName",
+        "type_client":"rtu",
+        "slave_id": 1,
+        "com_port":"COM3",
+        "baud_rate": 115200,
+        "data_bits": 8,
+        "stop_bits": 1,
+        "parity":"N",
+        "timeout_seconds":5}`)
 
+	req := httptest.NewRequest(http.MethodGet, "/device/add", myReader)
+	w := httptest.NewRecorder()
+
+	proxyServer.addIoTDevice(w, req)
 	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
