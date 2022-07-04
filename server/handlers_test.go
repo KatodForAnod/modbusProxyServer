@@ -125,7 +125,7 @@ func TestServer_addIotDeviceFails(t *testing.T) {
 }
 
 func TestServer_getInformationFromIotDevice(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/device/metrics?deviceName=testName2", nil)
+	req := httptest.NewRequest(http.MethodGet, "/device/metrics?deviceName=testName", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getInformationFromIotDevice(w, req)
 
