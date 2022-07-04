@@ -26,7 +26,13 @@ func (c *Controller) AddIoTDevice(device config.IotConfig) error {
 }
 
 func (c *Controller) RmIoTDevice(deviceName string) error {
-	panic("implement me")
+	for _, t := range c.ioTs {
+		if t.DeviceName == deviceName {
+			return nil
+		}
+	}
+
+	return errors.New("not found")
 }
 
 func (c *Controller) StopObserveDevice(deviceName string) error {
@@ -93,7 +99,7 @@ func TestServer_addIotDevice(t *testing.T) {
 func TestServer_getInformationFromIotDevice(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/metrics?deviceName=testName", nil)
 	w := httptest.NewRecorder()
-	proxyServer.getLogs(w, req)
+	proxyServer.getInformationFromIotDevice(w, req)
 
 	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
@@ -123,5 +129,15 @@ func TestServer_getLogs(t *testing.T) {
 	outArr := strings.Split(out, "\n")
 	if len(outArr) < 2 {
 		t.FailNow()
+	}
+}
+
+func TestServer_rmIotDevice(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceName=testName", nil)
+	w := httptest.NewRecorder()
+	proxyServer.rmIoTDevice(w, req)
+
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 }
