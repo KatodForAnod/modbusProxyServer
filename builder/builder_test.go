@@ -22,7 +22,7 @@ func TestBuildClient_BuildClient(t *testing.T) {
 
 	_, err := builder.BuildClient(conf)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("function BuildClient() is corrupted: unexpected error: %s", err)
 		return
 	}
 }
@@ -44,7 +44,7 @@ func TestBuildClient_BuildClient2(t *testing.T) {
 
 	_, err := builder.BuildClient(conf)
 	if err == nil {
-		t.FailNow()
+		t.Error("BuildClient() should return error in that case")
 	}
 }
 
@@ -65,7 +65,7 @@ func TestBuildClient_BuildClient3(t *testing.T) {
 
 	_, err := builder.BuildClient(conf)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("function BuildClient() is corrupted: unexpected error: %s", err)
 		return
 	}
 }
