@@ -201,6 +201,21 @@ func TestServer_observeCoils(t *testing.T) {
 	}
 }
 
+func TestServer_observeCoilsFail(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet,
+		"/device/observer/coils/start?deviceName=testName&address=1&time=1", nil)
+	w := httptest.NewRecorder()
+	proxyServer.observeDeviceCoils(w, req)
+
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+
+	if w.Body.String() == "" {
+		t.Fatalf("expected warning msg")
+	}
+}
+
 func TestServer_stopObserve(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet,
 		"/device/observer/stop?deviceName=testName", nil)
