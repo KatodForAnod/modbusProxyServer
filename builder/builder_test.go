@@ -6,6 +6,7 @@ import (
 )
 
 func TestBuildClient_BuildClient(t *testing.T) {
+	t.Log("Checking tcp client building")
 	builder := BuildClient{}
 	conf := config.IotConfig{
 		DeviceName:     "qwerty",
@@ -27,6 +28,7 @@ func TestBuildClient_BuildClient(t *testing.T) {
 }
 
 func TestBuildClient_BuildClient2(t *testing.T) {
+	t.Log("Checking not exist client type")
 	builder := BuildClient{}
 	conf := config.IotConfig{
 		DeviceName:     "qwerty",
@@ -47,6 +49,7 @@ func TestBuildClient_BuildClient2(t *testing.T) {
 }
 
 func TestBuildClient_BuildClient3(t *testing.T) {
+	t.Log("Checking rtu client building")
 	builder := BuildClient{}
 	conf := config.IotConfig{
 		DeviceName:     "qwerty",
