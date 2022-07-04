@@ -29,7 +29,7 @@ func main() {
 	serv_controller.Init(mem, iotControll)
 
 	serv := server.Server{}
-	serv.StartServer(conf, serv_controller)
+	serv.StartServer(conf, &serv_controller)
 
 	return
 }

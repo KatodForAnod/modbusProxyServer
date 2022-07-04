@@ -11,6 +11,15 @@ import (
 	"time"
 )
 
+type ServerController interface {
+	GetLastNRowsLogs(nRows int) ([]string, error)
+	GetInformation(deviceName string) ([]byte, error)
+	AddIoTDevice(device config.IotConfig) error
+	RmIoTDevice(deviceName string) error
+	StopObserveDevice(deviceName string) error
+	ObserveIoTCoils(deviceName, address, quantity, timeSecondsDuration string) error
+}
+
 type Controller struct {
 	mem            memory.Memory
 	ioTsController IoTsController
