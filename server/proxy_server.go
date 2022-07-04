@@ -48,7 +48,7 @@ func (s *Server) rmIoTDevice(w http.ResponseWriter, r *http.Request) {
 
 	if err := s.controller.RmIoTDevice(deviceName); err != nil {
 		log.Println(err)
-		fmt.Fprintf(w, "wrong device name")
+		http.Error(w, "wrong device name", http.StatusInternalServerError)
 		return
 	}
 }
@@ -170,7 +170,7 @@ func (s *Server) observeDeviceCoils(w http.ResponseWriter, r *http.Request) {
 	err := s.controller.ObserveIoTCoils(deviceName, address, quant, time)
 	if err != nil {
 		log.Println(err)
-		fmt.Fprintf(w, "wrong params")
+		http.Error(w, "wrong params", http.StatusInternalServerError)
 		return
 	}
 }

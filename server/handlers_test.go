@@ -134,6 +134,16 @@ func TestServer_getInformationFromIotDevice(t *testing.T) {
 	}
 }
 
+func TestServer_getInformationFromIotDeviceFail(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/device/metrics?deviceName=", nil)
+	w := httptest.NewRecorder()
+	proxyServer.getInformationFromIotDevice(w, req)
+
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
 func TestServer_removeIotDevice(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceName=testName", nil)
 	w := httptest.NewRecorder()
@@ -157,6 +167,16 @@ func TestServer_getLogs(t *testing.T) {
 	outArr := strings.Split(out, "\n")
 	if len(outArr) < 2 {
 		t.FailNow()
+	}
+}
+
+func TestServer_getLogsFail(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/logs?countLogs=", nil)
+	w := httptest.NewRecorder()
+	proxyServer.getLogs(w, req)
+
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 }
 
