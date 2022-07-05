@@ -245,9 +245,54 @@ func TestObserveCoils(t *testing.T) {
 	}
 }
 
-func TestObserveCoilsFail(t *testing.T) {
+func TestObserveCoilsFailEmptyQuantity(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet,
 		"/device/observer/coils/start?deviceName=testName&address=1&time=1", nil)
+	w := httptest.NewRecorder()
+	proxyServer.observeDeviceCoils(w, req)
+
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+
+	if w.Body.String() == "" {
+		t.Fatalf("expected warning msg")
+	}
+}
+
+func TestObserveCoilsFailEmptyTime(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet,
+		"/device/observer/coils/start?deviceName=testName&quantity=1&address=1", nil)
+	w := httptest.NewRecorder()
+	proxyServer.observeDeviceCoils(w, req)
+
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+
+	if w.Body.String() == "" {
+		t.Fatalf("expected warning msg")
+	}
+}
+
+func TestObserveCoilsFailEmptyAddress(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet,
+		"/device/observer/coils/start?deviceName=testName&quantity=1&time=1", nil)
+	w := httptest.NewRecorder()
+	proxyServer.observeDeviceCoils(w, req)
+
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+
+	if w.Body.String() == "" {
+		t.Fatalf("expected warning msg")
+	}
+}
+
+func TestObserveCoilsFailEmptyDeviceName(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet,
+		"/device/observer/coils/start?address=1&quantity=1&time=1", nil)
 	w := httptest.NewRecorder()
 	proxyServer.observeDeviceCoils(w, req)
 
