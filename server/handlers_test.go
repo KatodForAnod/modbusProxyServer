@@ -21,6 +21,16 @@ type Controller struct {
 }
 
 func (c *Controller) AddIoTDevice(device config.IotConfig) error {
+	if device.DeviceName == "" {
+		return errors.New("incorrect device name")
+	}
+
+	for _, t := range c.ioTs {
+		if t.DeviceName == device.DeviceName {
+			return errors.New("device with such name already exist")
+		}
+	}
+
 	c.ioTs = append(c.ioTs, device)
 	return nil
 }
@@ -94,6 +104,25 @@ func TestAddRTUClient(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/add", myReader)
 	w := httptest.NewRecorder()
 
+	proxyServer.addIoTDevice(w, req)
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
+func TestAddClientFailEmptyDeviceName(t *testing.T) {
+	myReader := strings.NewReader(`{"device_name":"",
+        "type_client":"rtu",
+        "slave_id": 1,
+        "com_port":"COM3",
+        "baud_rate": 115200,
+        "data_bits": 8,
+        "stop_bits": 1,
+        "parity":"N",
+        "timeout_seconds":5}`)
+
+	req := httptest.NewRequest(http.MethodGet, "/device/add", myReader)
+	w := httptest.NewRecorder()
 	proxyServer.addIoTDevice(w, req)
 	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
@@ -196,6 +225,16 @@ func TestGetLogs(t *testing.T) {
 
 func TestGetLogsFailEmptyCount(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/logs?countLogs=", nil)
+	w := httptest.NewRecorder()
+	proxyServer.getLogs(w, req)
+
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
+func TestGetLogsFail(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/logs?", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getLogs(w, req)
 
