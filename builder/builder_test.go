@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestBuildClient_BuildClient(t *testing.T) {
+func TestBuildClientTCPClient(t *testing.T) {
 	t.Log("Checking tcp client building")
 	builder := BuildClient{}
 	conf := config.IotConfig{
@@ -27,7 +27,7 @@ func TestBuildClient_BuildClient(t *testing.T) {
 	}
 }
 
-func TestBuildClient_BuildClient2(t *testing.T) {
+func TestBuildClientNotExistClientType(t *testing.T) {
 	t.Log("Checking not exist client type")
 	builder := BuildClient{}
 	conf := config.IotConfig{
@@ -48,7 +48,7 @@ func TestBuildClient_BuildClient2(t *testing.T) {
 	}
 }
 
-func TestBuildClient_BuildClient3(t *testing.T) {
+func TestBuildClientRTUClient(t *testing.T) {
 	t.Log("Checking rtu client building")
 	builder := BuildClient{}
 	conf := config.IotConfig{
