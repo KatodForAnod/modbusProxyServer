@@ -28,7 +28,7 @@ var configPath = "conf.config"
 func LoadConfig() (loadedConf Config, err error) {
 	data, err := ioutil.ReadFile(configPath)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return Config{}, err
 	}
 

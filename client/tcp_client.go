@@ -17,7 +17,7 @@ func (c *TCPClient) Connect() error {
 
 	handler.Address = c.conf.ComPort
 	if err := handler.Connect(); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
@@ -30,7 +30,7 @@ func (c *TCPClient) Connect() error {
 func (c *TCPClient) Disconnect() error {
 	log.Println("Disconnecting TCPClient from port:", c.handler.Address)
 	if err := c.handler.Close(); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 

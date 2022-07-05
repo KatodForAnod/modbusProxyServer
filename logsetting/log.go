@@ -34,7 +34,7 @@ func LogInit() error {
 func OpenLastLogFile() (*os.File, error) {
 	fileInfo, err := ioutil.ReadDir(dirName)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return nil, err
 	}
 
@@ -44,13 +44,13 @@ func OpenLastLogFile() (*os.File, error) {
 
 	if len(fileInfo) == 0 {
 		err := errors.New("not found log files")
-		log.Println(err)
+		log.Errorln(err)
 		return nil, err
 	}
 
 	file, err := os.Open(dirName + "/" + fileInfo[0].Name())
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return nil, err
 	}
 

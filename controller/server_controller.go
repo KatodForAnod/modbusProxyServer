@@ -35,7 +35,7 @@ func (c *Controller) GetInformation(deviceName string) ([]byte, error) {
 
 	load, err := c.mem.Load(deviceName)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -46,13 +46,13 @@ func (c *Controller) GetLastNRowsLogs(nRows int) ([]string, error) {
 	log.Println("controller get lastNRowsLogs")
 	file, err := logsetting.OpenLastLogFile()
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []string{}, err
 	}
 
 	logs, err := logsetting.GetNLastLines(file, nRows)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []string{}, err
 	}
 
@@ -65,13 +65,13 @@ func (c *Controller) AddIoTDevice(device config.IotConfig) error {
 	buildClient := builder.BuildClient{}
 	iotClient, err := buildClient.BuildClient(device)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
 	err = c.ioTsController.AddIoTsClients([]client.IoTClient{iotClient})
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
@@ -83,7 +83,7 @@ func (c *Controller) RmIoTDevice(deviceName string) error {
 
 	err := c.ioTsController.RemoveIoTsClients([]string{deviceName})
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
@@ -94,7 +94,7 @@ func (c *Controller) StopObserveDevice(deviceName string) error {
 	log.Println("controller stop observe device")
 
 	if err := c.ioTsController.StopObserveIoTDevice(deviceName); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
@@ -105,23 +105,23 @@ func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsD
 	log.Println("controller ObserveIoTCoils deviceName:", deviceName)
 	quantityUint, err := strconv.ParseUint(quantity, 10, 16)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 	addressUint, err := strconv.ParseUint(address, 10, 16)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 	timeInt, err := strconv.ParseInt(timeSecondsDuration, 10, 64)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
 	if err := c.ioTsController.ObserveCoils(deviceName,
 		uint16(addressUint), uint16(quantityUint), time.Duration(timeInt)*time.Second); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 

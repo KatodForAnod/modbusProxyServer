@@ -25,7 +25,7 @@ func (c *IoTsController) GetIoTsClients(deviceName []string) (founded []client.I
 			founded = append(founded, iotDevice)
 		} else {
 			err = errors.New("not found")
-			log.Println(err)
+			log.Errorln(err)
 			return []client.IoTClient{}, err
 		}
 	}
@@ -38,7 +38,7 @@ func (c *IoTsController) AddIoTsClients(devices []client.IoTClient) error {
 	for _, device := range devices {
 		if _, isExist := c.ioTDevices[device.GetDeviceName()]; isExist {
 			err := errors.New("device " + device.GetDeviceName() + " already exist")
-			log.Println(err)
+			log.Errorln(err)
 			return err
 		}
 	}
@@ -46,7 +46,7 @@ func (c *IoTsController) AddIoTsClients(devices []client.IoTClient) error {
 	for _, device := range devices {
 		err := device.Connect()
 		if err != nil {
-			log.Println(err)
+			log.Errorln(err)
 			continue
 		}
 		c.ioTDevices[device.GetDeviceName()] = device
@@ -60,7 +60,7 @@ func (c *IoTsController) RemoveIoTsClients(devicesName []string) error {
 	for _, deviceName := range devicesName {
 		if iot, isExist := c.ioTDevices[deviceName]; !isExist {
 			err := errors.New("device " + deviceName + " not exist")
-			log.Println(err)
+			log.Errorln(err)
 			return err
 		} else {
 			founded = append(founded, iot)
@@ -70,11 +70,11 @@ func (c *IoTsController) RemoveIoTsClients(devicesName []string) error {
 	for _, tClient := range founded {
 		if tClient.IsObserveInformProcess() {
 			if err := tClient.StopObserveInform(); err != nil {
-				log.Println(err)
+				log.Errorln(err)
 			}
 		}
 		if err := tClient.Disconnect(); err != nil {
-			log.Println(err)
+			log.Errorln(err)
 		}
 		delete(c.ioTDevices, tClient.GetDeviceName())
 	}
@@ -103,7 +103,7 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 	iot, isExist := c.ioTDevices[deviceName]
 	if !isExist {
 		err := errors.New("device not exist")
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
@@ -122,12 +122,12 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 	saveFunc := func() error {
 		coils, err := iot.ReadCoils(address, quantity)
 		if err != nil {
-			log.Println(err)
+			log.Errorln(err)
 			return err
 		}
 		//  memory.MsgType{}??
 		if err := c.mem.Save(coils, memory.MsgType{}, iot.GetDeviceName()); err != nil {
-			log.Println(err)
+			log.Errorln(err)
 			return err
 		}
 
@@ -138,7 +138,7 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 	go func() {
 		err := iot.StartObserveInform(saveFunc, d)
 		if err != nil {
-			log.Println(err)
+			log.Errorln(err)
 		}
 	}()
 	return nil
@@ -149,12 +149,12 @@ func (c *IoTsController) StopObserveIoTDevice(deviceName string) error {
 	iot, isExist := c.ioTDevices[deviceName]
 	if !isExist {
 		err := errors.New("device not exist")
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
 	if err := iot.StopObserveInform(); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 

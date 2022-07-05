@@ -65,7 +65,7 @@ func (c *BaseClient) ReadCoils(address, quantity uint16) ([]byte, error) {
 
 	result, err := c.client.ReadCoils(address, quantity)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -78,7 +78,7 @@ func (c *BaseClient) WriteSingleCoil(address uint16, coil CoilType) ([]byte, err
 
 	result, err := c.client.WriteSingleCoil(address, coil.ToUint16())
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -96,7 +96,7 @@ func (c *BaseClient) WriteMultipleCoils(address, quantity uint16, coils []CoilTy
 
 	result, err := c.client.WriteMultipleCoils(address, quantity, outCoils)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -109,7 +109,7 @@ func (c *BaseClient) WriteSingleRegister(address, value uint16) ([]byte, error) 
 
 	result, err := c.client.WriteSingleRegister(address, value)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -122,13 +122,13 @@ func (c *BaseClient) WriteMultipleRegisters(address, quantity uint16, values []u
 
 	bytes, err := c.hexDecimalInBytes(values)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
 	result, err := c.client.WriteMultipleRegisters(address, quantity, bytes)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -141,7 +141,7 @@ func (c *BaseClient) ReadDiscreteInputs(address, quantity uint16) ([]byte, error
 
 	result, err := c.client.ReadDiscreteInputs(address, quantity)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -154,7 +154,7 @@ func (c *BaseClient) ReadInputRegisters(address, quantity uint16) ([]byte, error
 
 	result, err := c.client.ReadInputRegisters(address, quantity)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -167,7 +167,7 @@ func (c *BaseClient) ReadHoldingRegisters(address, quantity uint16) ([]byte, err
 
 	result, err := c.client.ReadHoldingRegisters(address, quantity)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -183,14 +183,14 @@ func (c *BaseClient) ReadWriteMultipleRegisters(readAddress uint16, readQuantity
 
 	bytes, err := c.hexDecimalInBytes(values)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
 	result, err := c.client.ReadWriteMultipleRegisters(readAddress, readQuantity,
 		writeAddress, writeQuantity, bytes)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -203,7 +203,7 @@ func (c *BaseClient) ReadFIFOQueue(address uint16) ([]byte, error) {
 
 	result, err := c.client.ReadFIFOQueue(address)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -217,7 +217,7 @@ func (c *BaseClient) MaskWriteRegister(address uint16, andMask uint16, orMask ui
 
 	result, err := c.client.MaskWriteRegister(address, andMask, orMask)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -232,7 +232,7 @@ func (c *BaseClient) StartObserveInform(save func() error, duration time.Duratio
 	log.Println("StartObserveInform device:", c.deviceName)
 	if *c.isObserveInformProcess {
 		err := errors.New("already observe")
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
@@ -244,7 +244,7 @@ func (c *BaseClient) StartObserveInform(save func() error, duration time.Duratio
 		case <-time.After(duration):
 			if *c.isObserveInformProcess {
 				if err := save(); err != nil {
-					log.Println(err)
+					log.Errorln(err)
 				}
 			}
 		case <-c.stopObserve:
@@ -263,7 +263,7 @@ func (c *BaseClient) StopObserveInform() error {
 	log.Println("StopObserveInform device:", c.deviceName)
 	if !c.IsObserveInformProcess() {
 		err := errors.New("device " + c.deviceName + " not observing")
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
@@ -271,7 +271,7 @@ func (c *BaseClient) StopObserveInform() error {
 	case c.stopObserve <- true:
 	default:
 		err := errors.New("StopObserveInform cant stop thread")
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 

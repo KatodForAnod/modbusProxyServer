@@ -27,7 +27,7 @@ func (c *RTUClient) Connect() error {
 		RS485:    serial.RS485Config{},
 	}
 	if err := handler.Connect(); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
@@ -40,7 +40,7 @@ func (c *RTUClient) Connect() error {
 func (c *RTUClient) Disconnect() error {
 	log.Println("Disconnecting RTUClient from port:", c.handler.Config.Address)
 	if err := c.handler.Close(); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 

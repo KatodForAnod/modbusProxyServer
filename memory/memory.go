@@ -52,7 +52,7 @@ func (b *MemBuff) Load(nameDevice string) ([]byte, error) {
 	buff, isExist := b.buffers[nameDevice]
 	if !isExist {
 		err := errors.New("not found")
-		log.Println(err)
+		log.Errorln(err)
 		return []byte{}, err
 	}
 
@@ -63,19 +63,19 @@ func (b *MemBuff) FlushToFile(nameDevice string) error {
 	log.Println("flush to file in membuff")
 	file, err := os.OpenFile(nameDevice+".txt", os.O_WRONLY, 0666)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 
 	buff, isExist := b.buffers[nameDevice]
 	if !isExist {
 		err := errors.New("not found")
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 	_, err = file.Write(buff)
 	if err != nil {
-		log.Println(err)
+		log.Errorln(err)
 		return err
 	}
 	b.buffers[nameDevice] = []byte{}
