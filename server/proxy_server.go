@@ -135,39 +135,35 @@ func (s *Server) observeDeviceCoils(w http.ResponseWriter, r *http.Request) {
 	log.Println("handler ObserveDeviceCoils")
 	defer r.Body.Close()
 
-	deviceNames := r.URL.Query()["deviceName"]
-	if len(deviceNames) == 0 {
+	deviceName := r.URL.Query().Get("deviceName")
+	if deviceName == "" {
 		log.Println("device name not found")
 		fmt.Fprintf(w, "set device name")
 		return
 	}
-	deviceName := deviceNames[0]
 
-	addresses := r.URL.Query()["address"]
-	if len(addresses) == 0 {
+	address := r.URL.Query().Get("address")
+	if address == "" {
 		log.Println("address not found")
 		fmt.Fprintf(w, "set address")
 		return
 	}
-	address := addresses[0]
 
-	quantity := r.URL.Query()["quantity"]
-	if len(quantity) == 0 {
+	quantity := r.URL.Query().Get("quantity")
+	if quantity == "" {
 		log.Println("quantity not found")
 		fmt.Fprintf(w, "set quantity")
 		return
 	}
-	quant := quantity[0]
 
-	times := r.URL.Query()["time"]
-	if len(times) == 0 {
+	time := r.URL.Query().Get("time")
+	if time == "" {
 		log.Println("time not found")
 		fmt.Fprintf(w, "set time")
 		return
 	}
-	time := times[0]
 
-	err := s.controller.ObserveIoTCoils(deviceName, address, quant, time)
+	err := s.controller.ObserveIoTCoils(deviceName, address, quantity, time)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "wrong params", http.StatusInternalServerError)
