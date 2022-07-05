@@ -57,7 +57,7 @@ func deleteConfig(filePath string, t *testing.T) error {
 	return nil
 }
 
-func TestLoadConfigSuccessTCPClient(t *testing.T) {
+func TestLoadConfigTCPClient(t *testing.T) {
 	t.Log("testing loading config")
 	filePath, err := createConfig(t, confBodyTCP)
 	if err != nil {
@@ -84,7 +84,7 @@ func TestLoadConfigSuccessTCPClient(t *testing.T) {
 	}
 }
 
-func TestLoadConfigSuccessRTUClient(t *testing.T) {
+func TestLoadConfigRTUClient(t *testing.T) {
 	t.Log("testing loading config")
 	filePath, err := createConfig(t, confBodyRTU)
 	if err != nil {
@@ -111,7 +111,7 @@ func TestLoadConfigSuccessRTUClient(t *testing.T) {
 	}
 }
 
-func TestLoadConfigCheckField(t *testing.T) {
+func TestLoadConfigCheckFields(t *testing.T) {
 	t.Log("testing loading config")
 	filePath, err := createConfig(t, confBodyRTU)
 	if err != nil {
