@@ -160,7 +160,7 @@ func (s *Server) observeDeviceCoils(w http.ResponseWriter, r *http.Request) {
 	quant := quantity[0]
 
 	times := r.URL.Query()["time"]
-	if len(deviceNames) == 0 {
+	if len(times) == 0 {
 		log.Println("time not found")
 		fmt.Fprintf(w, "set time")
 		return
