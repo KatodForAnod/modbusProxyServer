@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestBuildClientTCPClient(t *testing.T) {
+func TestBuildTCPClient(t *testing.T) {
 	builder := BuildClient{}
 	conf := config.IotConfig{
 		DeviceName:     "qwerty",
@@ -26,7 +26,7 @@ func TestBuildClientTCPClient(t *testing.T) {
 	}
 }
 
-func TestBuildClientNotExistClientType(t *testing.T) {
+func TestBuildNotExistClientType(t *testing.T) {
 	builder := BuildClient{}
 	conf := config.IotConfig{
 		DeviceName:     "qwerty",
@@ -46,7 +46,7 @@ func TestBuildClientNotExistClientType(t *testing.T) {
 	}
 }
 
-func TestBuildClientRTUClient(t *testing.T) {
+func TestBuildRTUClient(t *testing.T) {
 	builder := BuildClient{}
 	conf := config.IotConfig{
 		DeviceName:     "qwerty",
