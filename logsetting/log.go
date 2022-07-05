@@ -3,9 +3,9 @@ package logsetting
 import (
 	"errors"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"sort"
 	"time"

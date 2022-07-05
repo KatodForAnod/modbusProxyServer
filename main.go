@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 	"modbusProxyServer/config"
 	"modbusProxyServer/controller"
 	"modbusProxyServer/memory"
@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	log.SetFlags(log.Lshortfile)
 	/*err := logsetting.LogInit()
 	if err != nil {
 		log.Fatal(err)

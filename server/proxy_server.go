@@ -3,7 +3,7 @@ package server
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"modbusProxyServer/config"
 	"modbusProxyServer/controller"
 	"net/http"

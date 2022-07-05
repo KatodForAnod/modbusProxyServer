@@ -2,7 +2,7 @@ package controller
 
 import (
 	"errors"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"modbusProxyServer/client"
 	"modbusProxyServer/memory"
 	"time"

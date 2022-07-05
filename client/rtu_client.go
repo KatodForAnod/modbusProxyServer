@@ -3,7 +3,7 @@ package client
 import (
 	"github.com/goburrow/modbus"
 	"github.com/goburrow/serial"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"time"
 )
 

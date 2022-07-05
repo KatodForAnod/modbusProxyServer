@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 	"modbusProxyServer/builder"
 	"modbusProxyServer/client"
 	"modbusProxyServer/config"

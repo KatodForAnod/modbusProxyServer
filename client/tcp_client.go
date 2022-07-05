@@ -2,7 +2,7 @@ package client
 
 import (
 	"github.com/goburrow/modbus"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 type TCPClient struct {

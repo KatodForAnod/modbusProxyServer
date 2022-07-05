@@ -2,8 +2,8 @@ package config
 
 import (
 	"encoding/json"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
-	"log"
 )
 
 type Config struct {

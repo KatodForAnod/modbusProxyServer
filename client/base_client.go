@@ -3,7 +3,7 @@ package client
 import (
 	"errors"
 	"github.com/goburrow/modbus"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"modbusProxyServer/config"
 	"time"
 )

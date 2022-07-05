@@ -2,7 +2,7 @@ package server
 
 import (
 	"errors"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"modbusProxyServer/config"
 	"net/http"
 	"net/http/httptest"
