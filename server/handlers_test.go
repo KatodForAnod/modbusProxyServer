@@ -75,13 +75,12 @@ func (c *Controller) GetInformation(deviceName string) ([]byte, error) {
 	return []byte{}, errors.New("not found")
 }
 
-func Init() {
+func TestServerInit(t *testing.T) {
 	controller := Controller{}
-	proxyServer.StartServer(config.Config{ProxyServerAddr: serverAddr}, &controller)
+	go proxyServer.StartServer(config.Config{ProxyServerAddr: serverAddr}, &controller)
 }
 
-func TestServer_addIotDevice(t *testing.T) {
-	go Init()
+func TestAddRTUClient(t *testing.T) {
 	myReader := strings.NewReader(`{"device_name":"testName",
         "type_client":"rtu",
         "slave_id": 1,
@@ -101,7 +100,7 @@ func TestServer_addIotDevice(t *testing.T) {
 	}
 }
 
-func TestServer_addIotDeviceFails(t *testing.T) {
+func TestAddWrongClientType(t *testing.T) {
 	myReader := strings.NewReader(`{"device_name":"testName",
         "type_client":"notValid",
         "slave_id": 1,
@@ -121,7 +120,7 @@ func TestServer_addIotDeviceFails(t *testing.T) {
 	}
 }
 
-func TestServer_getInformationFromIotDevice(t *testing.T) {
+func TestGetInformationFromIotDevice(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/metrics?deviceName=testName", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getInformationFromIotDevice(w, req)
@@ -131,7 +130,7 @@ func TestServer_getInformationFromIotDevice(t *testing.T) {
 	}
 }
 
-func TestServer_getInformationFromIotDeviceFail(t *testing.T) {
+func TestGetInformationFromEmptyDeviceName(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/metrics?deviceName=", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getInformationFromIotDevice(w, req)
@@ -141,7 +140,7 @@ func TestServer_getInformationFromIotDeviceFail(t *testing.T) {
 	}
 }
 
-func TestServer_getInformationFromIotDeviceFail2(t *testing.T) {
+func TestGetInformationFromEmptyIotDevice(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/metrics", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getInformationFromIotDevice(w, req)
@@ -155,7 +154,7 @@ func TestServer_getInformationFromIotDeviceFail2(t *testing.T) {
 	}
 }
 
-func TestServer_removeIotDevice(t *testing.T) {
+func TestRemoveIotDevice(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceName=testName", nil)
 	w := httptest.NewRecorder()
 	proxyServer.rmIoTDevice(w, req)
@@ -165,7 +164,7 @@ func TestServer_removeIotDevice(t *testing.T) {
 	}
 }
 
-func TestServer_removeIotDeviceFail(t *testing.T) {
+func TestRemoveIotDeviceFail(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceNam", nil)
 	w := httptest.NewRecorder()
 	proxyServer.rmIoTDevice(w, req)
@@ -179,7 +178,7 @@ func TestServer_removeIotDeviceFail(t *testing.T) {
 	}
 }
 
-func TestServer_getLogs(t *testing.T) {
+func TestGetLogs(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/logs?countLogs=2", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getLogs(w, req)
@@ -195,7 +194,7 @@ func TestServer_getLogs(t *testing.T) {
 	}
 }
 
-func TestServer_getLogsFail(t *testing.T) {
+func TestGetLogsFailEmptyCount(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/logs?countLogs=", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getLogs(w, req)
@@ -205,7 +204,7 @@ func TestServer_getLogsFail(t *testing.T) {
 	}
 }
 
-func TestServer_getLogsFail2(t *testing.T) {
+func TestGetLogsFailNegativeCount(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/logs?countLogs=-1", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getLogs(w, req)
@@ -215,7 +214,7 @@ func TestServer_getLogsFail2(t *testing.T) {
 	}
 }
 
-func TestServer_rmIotDevice(t *testing.T) {
+func TestRmIotDevice(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceName=testName", nil)
 	w := httptest.NewRecorder()
 	proxyServer.rmIoTDevice(w, req)
@@ -225,7 +224,7 @@ func TestServer_rmIotDevice(t *testing.T) {
 	}
 }
 
-func TestServer_rmIotDeviceFail(t *testing.T) {
+func TestRmIotDeviceFail(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceName=", nil)
 	w := httptest.NewRecorder()
 	proxyServer.rmIoTDevice(w, req)
@@ -235,7 +234,7 @@ func TestServer_rmIotDeviceFail(t *testing.T) {
 	}
 }
 
-func TestServer_observeCoils(t *testing.T) {
+func TestObserveCoils(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet,
 		"/device/observer/coils/start?deviceName=testName&address=1&quantity=1&time=1", nil)
 	w := httptest.NewRecorder()
@@ -246,7 +245,7 @@ func TestServer_observeCoils(t *testing.T) {
 	}
 }
 
-func TestServer_observeCoilsFail(t *testing.T) {
+func TestObserveCoilsFail(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet,
 		"/device/observer/coils/start?deviceName=testName&address=1&time=1", nil)
 	w := httptest.NewRecorder()
@@ -261,7 +260,7 @@ func TestServer_observeCoilsFail(t *testing.T) {
 	}
 }
 
-func TestServer_stopObserve(t *testing.T) {
+func TestStopObserve(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet,
 		"/device/observer/stop?deviceName=testName", nil)
 	w := httptest.NewRecorder()
@@ -272,7 +271,7 @@ func TestServer_stopObserve(t *testing.T) {
 	}
 }
 
-func TestServer_stopObserveFail(t *testing.T) {
+func TestStopObserveFail(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet,
 		"/device/observer/stop?deviceName", nil)
 	w := httptest.NewRecorder()
@@ -287,7 +286,7 @@ func TestServer_stopObserveFail(t *testing.T) {
 	}
 }
 
-func TestServer_stopObserveFail2(t *testing.T) {
+func TestStopObserveFailEmptyDeviceName(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet,
 		"/device/observer/stop?", nil)
 	w := httptest.NewRecorder()
