@@ -2,9 +2,11 @@ package server
 
 import (
 	"errors"
+	"log"
 	"modbusProxyServer/config"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -55,6 +57,12 @@ func (c *Controller) StopObserveDevice(deviceName string) error {
 }
 
 func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsDuration string) error {
+	_, err := strconv.ParseInt(timeSecondsDuration, 10, 64)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
 	c.iotObserver = deviceName
 	return nil
 }
@@ -311,6 +319,17 @@ func TestObserveCoilsFailEmptyTime(t *testing.T) {
 
 	if w.Body.String() == "" {
 		t.Fatalf("expected warning msg")
+	}
+}
+
+func TestObserveCoilsFailWrongTimeField(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet,
+		"/device/observer/coils/start?deviceName=testName&address=1&quantity=1&time=wrong", nil)
+	w := httptest.NewRecorder()
+	proxyServer.observeDeviceCoils(w, req)
+
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 }
 
