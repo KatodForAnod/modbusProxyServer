@@ -5,23 +5,31 @@ import (
 	"testing"
 )
 
-const confBody = `{
+const (
+	confBodyTCP = `{
     "proxy_server_addr":"127.0.0.1:5300",
     "iots_devices":[
         {
 			"type_client":"tcp"
 		}
-    ]
-}`
+    ]}`
 
-const confBody2 = `{
+	confBodyRTU = `{
+    "proxy_server_addr":"127.0.0.1:5300",
+    "iots_devices":[
+        {
+			"type_client":"rtu"
+		}
+    ]}`
+
+	confBodyWrongType = `{
     "proxy_server_addr":"127.0.0.1:5300",
     "iots_devices":[
         {
 			"type_client":"wrongtype"
 		}
-    ]
-}`
+    ]}`
+)
 
 func createConfig(t *testing.T, confBody string) (filePath string, err error) {
 	file, err := os.CreateTemp("", configPath)
@@ -49,9 +57,9 @@ func deleteConfig(filePath string, t *testing.T) error {
 	return nil
 }
 
-func TestLoadConfig_Success(t *testing.T) {
+func TestLoadConfigSuccessTCPClient(t *testing.T) {
 	t.Log("testing loading config")
-	filePath, err := createConfig(t, confBody)
+	filePath, err := createConfig(t, confBodyTCP)
 	if err != nil {
 		t.Errorf("function createConfig() is corrupted: unexpected error: %s", err)
 		return
@@ -76,9 +84,73 @@ func TestLoadConfig_Success(t *testing.T) {
 	}
 }
 
-func TestLoadConfig_Fail(t *testing.T) {
+func TestLoadConfigSuccessRTUClient(t *testing.T) {
+	t.Log("testing loading config")
+	filePath, err := createConfig(t, confBodyRTU)
+	if err != nil {
+		t.Errorf("function createConfig() is corrupted: unexpected error: %s", err)
+		return
+	}
+
+	temp := configPath
+	configPath = filePath
+
+	defer func() {
+		configPath = temp
+		err = deleteConfig(filePath, t)
+		if err != nil {
+			t.Log(err)
+			return
+		}
+	}()
+
+	_, err = LoadConfig()
+	if err != nil {
+		t.Errorf("function LoadConfig() is corrupted: unexpected error: %s", err)
+		return
+	}
+}
+
+func TestLoadConfigCheckField(t *testing.T) {
+	t.Log("testing loading config")
+	filePath, err := createConfig(t, confBodyRTU)
+	if err != nil {
+		t.Errorf("function createConfig() is corrupted: unexpected error: %s", err)
+		return
+	}
+
+	temp := configPath
+	configPath = filePath
+
+	defer func() {
+		configPath = temp
+		err = deleteConfig(filePath, t)
+		if err != nil {
+			t.Log(err)
+			return
+		}
+	}()
+
+	conf, err := LoadConfig()
+	if err != nil {
+		t.Errorf("function LoadConfig() is corrupted: unexpected error: %s", err)
+		return
+	}
+
+	expectedLen := 1
+	if len(conf.IoTsDevices) < expectedLen {
+		t.Errorf("expected len > %d, instead got: %d", expectedLen, len(conf.IoTsDevices))
+	}
+
+	if conf.IoTsDevices[0].TypeClient.String() != RTUClientType {
+		t.Errorf("expected client type = %s, instead got: %s",
+			RTUClientType, conf.IoTsDevices[0].TypeClient.String())
+	}
+}
+
+func TestLoadConfigFail(t *testing.T) {
 	t.Log("testing unsuccessful loading config")
-	filePath, err := createConfig(t, confBody2)
+	filePath, err := createConfig(t, confBodyWrongType)
 	if err != nil {
 		t.Errorf("function createConfig() is corrupted: unexpected error: %s", err)
 		return
