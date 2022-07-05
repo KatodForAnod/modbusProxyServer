@@ -132,7 +132,7 @@ func TestAddClientFailEmptyDeviceName(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/add", myReader)
 	w := httptest.NewRecorder()
 	proxyServer.addIoTDevice(w, req)
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 }
@@ -246,8 +246,12 @@ func TestGetLogsFail(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.getLogs(w, req)
 
-	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+
+	if w.Body.String() == "" {
+		t.Fatalf("expected warning msg")
 	}
 }
 
