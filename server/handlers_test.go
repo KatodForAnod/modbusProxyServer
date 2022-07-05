@@ -2,7 +2,6 @@ package server
 
 import (
 	"errors"
-	"log"
 	"modbusProxyServer/config"
 	"net/http"
 	"net/http/httptest"
@@ -83,7 +82,6 @@ func Init() {
 
 func TestServer_addIotDevice(t *testing.T) {
 	go Init()
-	log.SetFlags(log.Lshortfile)
 	myReader := strings.NewReader(`{"device_name":"testName",
         "type_client":"rtu",
         "slave_id": 1,
@@ -104,7 +102,6 @@ func TestServer_addIotDevice(t *testing.T) {
 }
 
 func TestServer_addIotDeviceFails(t *testing.T) {
-	log.SetFlags(log.Lshortfile)
 	myReader := strings.NewReader(`{"device_name":"testName",
         "type_client":"notValid",
         "slave_id": 1,
