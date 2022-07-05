@@ -147,10 +147,24 @@ func TestServer_getInformationFromIotDeviceFail(t *testing.T) {
 func TestServer_removeIotDevice(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceName=testName", nil)
 	w := httptest.NewRecorder()
-	proxyServer.getLogs(w, req)
+	proxyServer.rmIoTDevice(w, req)
 
 	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
+func TestServer_removeIotDeviceFail(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/device/rm?deviceNam", nil)
+	w := httptest.NewRecorder()
+	proxyServer.rmIoTDevice(w, req)
+
+	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+
+	if w.Body.String() == "" {
+		t.Fatalf("expected warning msg")
 	}
 }
 
@@ -172,6 +186,16 @@ func TestServer_getLogs(t *testing.T) {
 
 func TestServer_getLogsFail(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/logs?countLogs=", nil)
+	w := httptest.NewRecorder()
+	proxyServer.getLogs(w, req)
+
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
+func TestServer_getLogsFail2(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/logs?countLogs=-1", nil)
 	w := httptest.NewRecorder()
 	proxyServer.getLogs(w, req)
 
@@ -234,5 +258,20 @@ func TestServer_stopObserve(t *testing.T) {
 
 	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+}
+
+func TestServer_stopObserveFail(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet,
+		"/device/observer/stop?deviceName", nil)
+	w := httptest.NewRecorder()
+	proxyServer.stopObserveDevice(w, req)
+
+	if want, got := http.StatusInternalServerError, w.Result().StatusCode; want != got {
+		t.Fatalf("expected a %d, instead got: %d", want, got)
+	}
+
+	if w.Body.String() == "" {
+		t.Fatalf("expected warning msg")
 	}
 }
