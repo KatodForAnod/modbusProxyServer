@@ -16,7 +16,6 @@ type Server struct {
 }
 
 func (s *Server) addIoTDevice(w http.ResponseWriter, r *http.Request) {
-	log.Println("handler addIoTDevice")
 	defer r.Body.Close()
 
 	var iotDev config.IotConfig
@@ -35,7 +34,6 @@ func (s *Server) addIoTDevice(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) rmIoTDevice(w http.ResponseWriter, r *http.Request) {
-	log.Println("handler rmIoTDevice")
 	defer r.Body.Close()
 
 	deviceNames := r.URL.Query()["deviceName"]
@@ -54,7 +52,6 @@ func (s *Server) rmIoTDevice(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) stopObserveDevice(w http.ResponseWriter, r *http.Request) {
-	log.Println("handler stopObserveDevice")
 	defer r.Body.Close()
 
 	deviceNames := r.URL.Query()["deviceName"]
@@ -73,7 +70,6 @@ func (s *Server) stopObserveDevice(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) getInformationFromIotDevice(w http.ResponseWriter, r *http.Request) {
-	log.Println("handler getInformationFromIotDevice")
 	defer r.Body.Close()
 	deviceNames := r.URL.Query()["deviceName"]
 	if len(deviceNames) == 0 {
@@ -100,7 +96,6 @@ func (s *Server) getInformationFromIotDevice(w http.ResponseWriter, r *http.Requ
 
 func (s *Server) getLogs(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	log.Println("handler getLogs")
 	countLogsArr := r.URL.Query()["countLogs"]
 	if len(countLogsArr) == 0 {
 		log.Errorln("count logs not found")
@@ -132,7 +127,6 @@ func (s *Server) getLogs(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) observeDeviceCoils(w http.ResponseWriter, r *http.Request) {
-	log.Println("handler ObserveDeviceCoils")
 	defer r.Body.Close()
 
 	deviceName := r.URL.Query().Get("deviceName")
