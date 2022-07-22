@@ -38,8 +38,7 @@ func (s *Server) rmIoTDevice(w http.ResponseWriter, r *http.Request) {
 
 	deviceNames := r.URL.Query()["deviceName"]
 	if len(deviceNames) == 0 {
-		log.Errorln("device name not found")
-		fmt.Fprintf(w, "set device name")
+		http.Error(w, "set device name", http.StatusBadRequest)
 		return
 	}
 	deviceName := deviceNames[0]
@@ -56,8 +55,7 @@ func (s *Server) stopObserveDevice(w http.ResponseWriter, r *http.Request) {
 
 	deviceNames := r.URL.Query()["deviceName"]
 	if len(deviceNames) == 0 {
-		log.Errorln("device name not found")
-		fmt.Fprintf(w, "set device name")
+		http.Error(w, "set device name", http.StatusBadRequest)
 		return
 	}
 	deviceName := deviceNames[0]
@@ -73,8 +71,7 @@ func (s *Server) getInformationFromIotDevice(w http.ResponseWriter, r *http.Requ
 	defer r.Body.Close()
 	deviceNames := r.URL.Query()["deviceName"]
 	if len(deviceNames) == 0 {
-		log.Errorln("device name not found")
-		fmt.Fprintf(w, "set device name")
+		http.Error(w, "set device name", http.StatusBadRequest)
 		return
 	}
 	deviceName := deviceNames[0]
@@ -98,8 +95,7 @@ func (s *Server) getLogs(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	countLogsArr := r.URL.Query()["countLogs"]
 	if len(countLogsArr) == 0 {
-		log.Errorln("count logs not found")
-		fmt.Fprintf(w, "set count logs")
+		http.Error(w, "set device name", http.StatusBadRequest)
 		return
 	}
 	countLogsStr := countLogsArr[0]
@@ -129,33 +125,17 @@ func (s *Server) getLogs(w http.ResponseWriter, r *http.Request) {
 func (s *Server) observeDeviceCoils(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
+	for _, s2 := range []string{"deviceName", "address", "quantity", "time"} {
+		if !r.URL.Query().Has(s2) {
+			http.Error(w, "parameter is missing: "+s2, http.StatusBadRequest)
+			return
+		}
+	}
+
 	deviceName := r.URL.Query().Get("deviceName")
-	if deviceName == "" {
-		log.Errorln("device name not found")
-		fmt.Fprintf(w, "set device name")
-		return
-	}
-
 	address := r.URL.Query().Get("address")
-	if address == "" {
-		log.Errorln("address not found")
-		fmt.Fprintf(w, "set address")
-		return
-	}
-
 	quantity := r.URL.Query().Get("quantity")
-	if quantity == "" {
-		log.Errorln("quantity not found")
-		fmt.Fprintf(w, "set quantity")
-		return
-	}
-
 	time := r.URL.Query().Get("time")
-	if time == "" {
-		log.Errorln("time not found")
-		fmt.Fprintf(w, "set time")
-		return
-	}
 
 	err := s.controller.ObserveIoTCoils(deviceName, address, quantity, time)
 	if err != nil {
