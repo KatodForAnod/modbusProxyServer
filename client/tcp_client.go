@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"github.com/goburrow/modbus"
 	log "github.com/sirupsen/logrus"
 )
@@ -17,8 +18,7 @@ func (c *TCPClient) Connect() error {
 
 	handler.Address = c.conf.ComPort
 	if err := handler.Connect(); err != nil {
-		log.Errorln(err)
-		return err
+		return fmt.Errorf("tcpclient connect: %s", err.Error())
 	}
 
 	c.handler = handler
@@ -30,8 +30,7 @@ func (c *TCPClient) Connect() error {
 func (c *TCPClient) Disconnect() error {
 	log.Println("Disconnecting TCPClient from port:", c.handler.Address)
 	if err := c.handler.Close(); err != nil {
-		log.Errorln(err)
-		return err
+		return fmt.Errorf("tcpclient disconnect: %s", err.Error())
 	}
 
 	return nil

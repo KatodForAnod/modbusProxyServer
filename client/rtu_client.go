@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"github.com/goburrow/modbus"
 	"github.com/goburrow/serial"
 	log "github.com/sirupsen/logrus"
@@ -27,8 +28,7 @@ func (c *RTUClient) Connect() error {
 		RS485:    serial.RS485Config{},
 	}
 	if err := handler.Connect(); err != nil {
-		log.Errorln(err)
-		return err
+		return fmt.Errorf("rtuclient connect: %s", err.Error())
 	}
 
 	c.handler = handler
@@ -40,8 +40,7 @@ func (c *RTUClient) Connect() error {
 func (c *RTUClient) Disconnect() error {
 	log.Println("Disconnecting RTUClient from port:", c.handler.Config.Address)
 	if err := c.handler.Close(); err != nil {
-		log.Errorln(err)
-		return err
+		return fmt.Errorf("rtuclient dosconnect: %s", err.Error())
 	}
 
 	return nil

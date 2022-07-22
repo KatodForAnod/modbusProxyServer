@@ -1,7 +1,6 @@
 package memory
 
 import (
-	"errors"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"os"
@@ -35,7 +34,6 @@ func (b *MemBuff) InitStruct() error {
 }
 
 func (b *MemBuff) Save(msg []byte, typeMsg MsgType, nameDevice string) error {
-	log.Println("save in membuff")
 	buff, isExist := b.buffers[nameDevice]
 	if !isExist {
 		newBuff := make([]byte, 0)
@@ -48,12 +46,9 @@ func (b *MemBuff) Save(msg []byte, typeMsg MsgType, nameDevice string) error {
 }
 
 func (b *MemBuff) Load(nameDevice string) ([]byte, error) {
-	log.Println("load from membuff")
 	buff, isExist := b.buffers[nameDevice]
 	if !isExist {
-		err := errors.New("not found")
-		log.Errorln(err)
-		return []byte{}, err
+		return []byte{}, fmt.Errorf("memBuff load: device %s not exist", nameDevice)
 	}
 
 	return buff, nil
@@ -63,15 +58,12 @@ func (b *MemBuff) FlushToFile(nameDevice string) error {
 	log.Println("flush to file in membuff")
 	file, err := os.OpenFile(nameDevice+".txt", os.O_WRONLY, 0666)
 	if err != nil {
-		log.Errorln(err)
-		return err
+		return fmt.Errorf("memBuff flushToFile: %s", err.Error())
 	}
 
 	buff, isExist := b.buffers[nameDevice]
 	if !isExist {
-		err := errors.New("not found")
-		log.Errorln(err)
-		return err
+		return fmt.Errorf("memBuff flushToFile: device %s not exist", nameDevice)
 	}
 	_, err = file.Write(buff)
 	if err != nil {
