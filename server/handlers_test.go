@@ -182,7 +182,7 @@ func TestGetInformationFromEmptyIotDevice(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.getInformationFromIotDevice(w, req)
 
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusBadRequest, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 
@@ -206,7 +206,7 @@ func TestRemoveIotDeviceFail(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.rmIoTDevice(w, req)
 
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusBadRequest, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 
@@ -246,7 +246,7 @@ func TestGetLogsFail(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.getLogs(w, req)
 
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusBadRequest, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 
@@ -302,7 +302,7 @@ func TestObserveCoilsFailEmptyQuantity(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.observeDeviceCoils(w, req)
 
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusBadRequest, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 
@@ -317,7 +317,7 @@ func TestObserveCoilsFailEmptyTime(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.observeDeviceCoils(w, req)
 
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusBadRequest, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 
@@ -343,7 +343,7 @@ func TestObserveCoilsFailEmptyAddress(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.observeDeviceCoils(w, req)
 
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusBadRequest, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 
@@ -358,7 +358,7 @@ func TestObserveCoilsFailEmptyDeviceName(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.observeDeviceCoils(w, req)
 
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusBadRequest, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 
@@ -399,7 +399,7 @@ func TestStopObserveFailEmptyDeviceName(t *testing.T) {
 	w := httptest.NewRecorder()
 	proxyServer.stopObserveDevice(w, req)
 
-	if want, got := http.StatusOK, w.Result().StatusCode; want != got {
+	if want, got := http.StatusBadRequest, w.Result().StatusCode; want != got {
 		t.Fatalf("expected a %d, instead got: %d", want, got)
 	}
 
