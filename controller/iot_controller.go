@@ -19,7 +19,6 @@ func (c *IoTsController) Init(mem memory.Memory) {
 }
 
 func (c *IoTsController) GetIoTsClients(deviceName []string) (founded []client.IoTClient, err error) {
-	log.Println("GetIoTsClients")
 	for _, s := range deviceName {
 		if iotDevice, isExist := c.ioTDevices[s]; isExist {
 			founded = append(founded, iotDevice)
@@ -34,7 +33,6 @@ func (c *IoTsController) GetIoTsClients(deviceName []string) (founded []client.I
 }
 
 func (c *IoTsController) AddIoTsClients(devices []client.IoTClient) error {
-	log.Println("AddIoTsClients")
 	for _, device := range devices {
 		if _, isExist := c.ioTDevices[device.GetDeviceName()]; isExist {
 			err := errors.New("device " + device.GetDeviceName() + " already exist")
@@ -55,7 +53,6 @@ func (c *IoTsController) AddIoTsClients(devices []client.IoTClient) error {
 }
 
 func (c *IoTsController) RemoveIoTsClients(devicesName []string) error {
-	log.Println("RemoveIoTsClients")
 	var founded []client.IoTClient
 	for _, deviceName := range devicesName {
 		if iot, isExist := c.ioTDevices[deviceName]; !isExist {
@@ -99,7 +96,6 @@ func (c *IoTsController) ObserveDiscreteInputs(deviceName string, address, quant
 }
 
 func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint16, d time.Duration) error {
-	log.Println("ObserveCoils device:", deviceName)
 	iot, isExist := c.ioTDevices[deviceName]
 	if !isExist {
 		err := errors.New("device not exist")
@@ -145,7 +141,6 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 }
 
 func (c *IoTsController) StopObserveIoTDevice(deviceName string) error {
-	log.Println("Stop observe device:", deviceName)
 	iot, isExist := c.ioTDevices[deviceName]
 	if !isExist {
 		err := errors.New("device not exist")

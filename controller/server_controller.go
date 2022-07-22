@@ -31,8 +31,6 @@ func (c *Controller) Init(mem memory.Memory, controller IoTsController) {
 }
 
 func (c *Controller) GetInformation(deviceName string) ([]byte, error) {
-	log.Println("controller get information of iot device", deviceName)
-
 	load, err := c.mem.Load(deviceName)
 	if err != nil {
 		log.Errorln(err)
@@ -43,7 +41,6 @@ func (c *Controller) GetInformation(deviceName string) ([]byte, error) {
 }
 
 func (c *Controller) GetLastNRowsLogs(nRows int) ([]string, error) {
-	log.Println("controller get lastNRowsLogs")
 	file, err := logsetting.OpenLastLogFile()
 	if err != nil {
 		log.Errorln(err)
@@ -60,8 +57,6 @@ func (c *Controller) GetLastNRowsLogs(nRows int) ([]string, error) {
 }
 
 func (c *Controller) AddIoTDevice(device config.IotConfig) error {
-	log.Println("controller AddIoTDevice")
-
 	buildClient := builder.BuildClient{}
 	iotClient, err := buildClient.BuildClient(device)
 	if err != nil {
@@ -79,8 +74,6 @@ func (c *Controller) AddIoTDevice(device config.IotConfig) error {
 }
 
 func (c *Controller) RmIoTDevice(deviceName string) error {
-	log.Println("controller RmIoTDevice")
-
 	err := c.ioTsController.RemoveIoTsClients([]string{deviceName})
 	if err != nil {
 		log.Errorln(err)
@@ -91,8 +84,6 @@ func (c *Controller) RmIoTDevice(deviceName string) error {
 }
 
 func (c *Controller) StopObserveDevice(deviceName string) error {
-	log.Println("controller stop observe device")
-
 	if err := c.ioTsController.StopObserveIoTDevice(deviceName); err != nil {
 		log.Errorln(err)
 		return err
@@ -102,7 +93,6 @@ func (c *Controller) StopObserveDevice(deviceName string) error {
 }
 
 func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsDuration string) error {
-	log.Println("controller ObserveIoTCoils deviceName:", deviceName)
 	quantityUint, err := strconv.ParseUint(quantity, 10, 16)
 	if err != nil {
 		log.Errorln(err)
