@@ -35,7 +35,7 @@ type BaseClient struct {
 	clientType             config.ClientType
 	client                 modbus.Client
 	isObserveInformProcess *bool
-	stopObserve            chan bool
+	stopObserve            chan struct{}
 	conf                   config.IotConfig
 }
 
@@ -44,7 +44,7 @@ func (c *BaseClient) Init(conf config.IotConfig) {
 	c.deviceName = conf.DeviceName
 	c.conf = conf
 	c.clientType = conf.TypeClient
-	c.stopObserve = make(chan bool)
+	c.stopObserve = make(chan struct{})
 }
 
 func (c *BaseClient) GetDeviceName() string {
@@ -268,7 +268,7 @@ func (c *BaseClient) StopObserveInform() error {
 	}
 
 	select {
-	case c.stopObserve <- true:
+	case c.stopObserve <- struct{}{}:
 	default:
 		err := errors.New("StopObserveInform cant stop thread")
 		log.Errorln(err)
