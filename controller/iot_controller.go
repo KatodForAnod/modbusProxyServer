@@ -102,14 +102,15 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 		return nil
 	}
 
-	delay := time.Millisecond * 500
-	timer := time.AfterFunc(d+delay, func() {
-		if iot.IsObserveInformProcess() {
-			log.Println("iot device -", iot.GetDeviceName(), "timeout response")
-		}
-	})
-
 	saveFunc := func() error {
+		delay := time.Millisecond * 500
+		timer := time.AfterFunc(delay, func() {
+			if iot.IsObserveInformProcess() {
+				log.Println("iot device -", iot.GetDeviceName(), "timeout response")
+			}
+		})
+		defer timer.Stop()
+
 		coils, err := iot.ReadCoils(address, quantity)
 		if err != nil {
 			return fmt.Errorf("savefunc readCoils err: %s", err.Error())
@@ -119,7 +120,6 @@ func (c *IoTsController) ObserveCoils(deviceName string, address, quantity uint1
 			return fmt.Errorf("savefunc memorySave err: %s", err.Error())
 		}
 
-		timer.Reset(d + delay)
 		return nil
 	}
 

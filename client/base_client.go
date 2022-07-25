@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"fmt"
 	"github.com/goburrow/modbus"
 	log "github.com/sirupsen/logrus"
 	"modbusProxyServer/config"
@@ -242,10 +243,15 @@ func (c *BaseClient) StartObserveInform(save func() error, duration time.Duratio
 	for {
 		select {
 		case <-time.After(duration):
-			if *c.isObserveInformProcess {
-				if err := save(); err != nil {
-					log.Errorln(err)
-				}
+			if !*c.isObserveInformProcess {
+				continue
+			}
+
+			err := save()
+			if err != nil {
+				fl := false
+				c.isObserveInformProcess = &fl
+				return fmt.Errorf("save func err %s", err.Error())
 			}
 		case <-c.stopObserve:
 			fl := false
