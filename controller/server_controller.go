@@ -61,28 +61,15 @@ func (c *Controller) AddIoTDevice(device config.IotConfig) error {
 	}
 
 	err = c.ioTsController.AddIoTsClients([]client.IoTClient{iotClient})
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func (c *Controller) RmIoTDevice(deviceName string) error {
-	err := c.ioTsController.RemoveIoTsClients([]string{deviceName})
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return c.ioTsController.RemoveIoTsClients([]string{deviceName})
 }
 
 func (c *Controller) StopObserveDevice(deviceName string) error {
-	if err := c.ioTsController.StopObserveIoTDevice(deviceName); err != nil {
-		return err
-	}
-
-	return nil
+	return c.ioTsController.StopObserveIoTDevice(deviceName)
 }
 
 func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsDuration string) error {
@@ -99,10 +86,7 @@ func (c *Controller) ObserveIoTCoils(deviceName, address, quantity, timeSecondsD
 		return fmt.Errorf("parse timeSecondsDuration: %s", err.Error())
 	}
 
-	if err := c.ioTsController.ObserveCoils(deviceName,
-		uint16(addressUint), uint16(quantityUint), time.Duration(timeInt)*time.Second); err != nil {
-		return err
-	}
-
-	return nil
+	err = c.ioTsController.ObserveCoils(deviceName,
+		uint16(addressUint), uint16(quantityUint), time.Duration(timeInt)*time.Second)
+	return err
 }
