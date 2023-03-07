@@ -2,8 +2,8 @@ package server
 
 import (
 	"errors"
+	"github.com/KatodForAnod/modbusProxyServer/config"
 	log "github.com/sirupsen/logrus"
-	"modbusProxyServer/config"
 	"net/http"
 	"net/http/httptest"
 	"strconv"

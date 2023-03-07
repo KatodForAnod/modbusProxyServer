@@ -2,8 +2,8 @@ package builder
 
 import (
 	"errors"
-	"modbusProxyServer/client"
-	"modbusProxyServer/config"
+	"github.com/KatodForAnod/modbusProxyServer/client"
+	"github.com/KatodForAnod/modbusProxyServer/config"
 )
 
 type BuildClient struct {

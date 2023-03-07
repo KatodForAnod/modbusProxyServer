@@ -3,9 +3,9 @@ package client
 import (
 	"errors"
 	"fmt"
+	"github.com/KatodForAnod/modbusProxyServer/config"
 	"github.com/goburrow/modbus"
 	log "github.com/sirupsen/logrus"
-	"modbusProxyServer/config"
 	"time"
 )
 

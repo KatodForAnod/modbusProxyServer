@@ -2,11 +2,11 @@ package controller
 
 import (
 	"fmt"
-	"modbusProxyServer/builder"
-	"modbusProxyServer/client"
-	"modbusProxyServer/config"
-	"modbusProxyServer/logsetting"
-	"modbusProxyServer/memory"
+	"github.com/KatodForAnod/modbusProxyServer/builder"
+	"github.com/KatodForAnod/modbusProxyServer/client"
+	"github.com/KatodForAnod/modbusProxyServer/config"
+	"github.com/KatodForAnod/modbusProxyServer/logsetting"
+	"github.com/KatodForAnod/modbusProxyServer/memory"
 	"strconv"
 	"time"
 )

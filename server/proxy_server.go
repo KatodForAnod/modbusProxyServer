@@ -3,9 +3,9 @@ package server
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/KatodForAnod/modbusProxyServer/config"
+	"github.com/KatodForAnod/modbusProxyServer/controller"
 	log "github.com/sirupsen/logrus"
-	"modbusProxyServer/config"
-	"modbusProxyServer/controller"
 	"net/http"
 	"strconv"
 	"strings"

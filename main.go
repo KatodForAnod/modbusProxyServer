@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/KatodForAnod/modbusProxyServer/config"
+	"github.com/KatodForAnod/modbusProxyServer/controller"
+	"github.com/KatodForAnod/modbusProxyServer/memory"
+	"github.com/KatodForAnod/modbusProxyServer/server"
 	log "github.com/sirupsen/logrus"
-	"modbusProxyServer/config"
-	"modbusProxyServer/controller"
-	"modbusProxyServer/memory"
-	"modbusProxyServer/server"
 )
 
 func main() {

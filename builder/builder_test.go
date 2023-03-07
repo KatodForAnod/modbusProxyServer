@@ -1,7 +1,7 @@
 package builder
 
 import (
-	"modbusProxyServer/config"
+	"github.com/KatodForAnod/modbusProxyServer/config"
 	"testing"
 )
 

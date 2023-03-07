@@ -3,9 +3,9 @@ package controller
 import (
 	"errors"
 	"fmt"
+	"github.com/KatodForAnod/modbusProxyServer/client"
+	"github.com/KatodForAnod/modbusProxyServer/memory"
 	log "github.com/sirupsen/logrus"
-	"modbusProxyServer/client"
-	"modbusProxyServer/memory"
 	"time"
 )
 

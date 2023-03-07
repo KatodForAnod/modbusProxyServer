@@ -1,4 +1,4 @@
-module modbusProxyServer
+module github.com/KatodForAnod/modbusProxyServer
 
 go 1.17
 
